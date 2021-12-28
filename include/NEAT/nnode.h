@@ -44,8 +44,8 @@ namespace NEAT {
 	};
 
 	class Link;
+	
 	class Network;
-	class Genome;
 
 	// ----------------------------------------------------------------------- 
 	// A NODE is either a NEURON or a SENSOR.  

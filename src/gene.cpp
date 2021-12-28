@@ -17,21 +17,9 @@
 // Modifications made by David Roberts <d@vidr.cc>, 2010.
 
 #include "gene.h"
-
-#include <iostream>
 #include <sstream>
+
 using namespace NEAT;
-
-Gene::Gene(double w, NNode *inode, NNode *onode, bool recur, double innov, double mnum) {
-	lnk = new Link(w, inode, onode, recur);
-	innovation_num = innov;
-	mutation_num = mnum;
-
-	enable = true;
-
-	frozen = false;
-}
-
 
 Gene::Gene(Trait *tp,double w,NNode *inode,NNode *onode,bool recur,double innov,double mnum) {
 	lnk=new Link(tp,w,inode,onode,recur);
@@ -123,20 +111,9 @@ Gene::Gene(const char *argline, std::vector<Trait*> &traits, std::vector<NNode*>
 	lnk=new Link(traitptr,weight,inode,onode,recur);
 }
 
-Gene::Gene(const Gene& gene)
-{
-	innovation_num = gene.innovation_num;
-	mutation_num = gene.mutation_num;
-	enable = gene.enable;
-	frozen = gene.frozen;
-
-	lnk = new Link(*gene.lnk);
-}
-
 Gene::~Gene() {
 	delete lnk;
 }
-
 
 void Gene::print_to_file(std::ofstream &outFile) {
   outFile<<"gene ";
@@ -150,33 +127,4 @@ void Gene::print_to_file(std::ofstream &outFile) {
   outFile<<innovation_num<<" ";
   outFile<<mutation_num<<" ";
   outFile<<enable<<std::endl;
-}
-
-
-void Gene::print_to_file(std::ostream &outFile) {
-	outFile<<"gene ";
-	//outFile.write(5, "gene ");
-
-	//Start off with the trait number for this gene
-	if ((lnk->linktrait)==0) {
-		outFile<<"0 ";
-		//outFile.write(2, "0 ");
-	}
-	else {
-		outFile<<((lnk->linktrait)->trait_id)<<" ";
-		//char tempbuf2[128];
-		//sprintf(tempbuf2, sizeof(tempbuf2),"%d ", (lnk->linktrait)->trait_id);
-		//outFile.write(strlen(tempbuf2),tempbuf2);
-	}
-	//char tempbuf[1024];
-	//sprintf(tempbuf,sizeof(tempbuf),"%d %d %f %d %f %f %d\n", (lnk->in_node)->node_id,
-	//	(lnk->out_node)->node_id, lnk->weight, lnk->is_recurrent, innovation_num, mutation_num, enable);
-	//outFile.write(strlen(tempbuf),tempbuf);
-	outFile<<(lnk->in_node)->node_id<<" ";
-	outFile<<(lnk->out_node)->node_id<<" ";
-	outFile<<(lnk->weight)<<" ";
-	outFile<<(lnk->is_recurrent)<<" ";
-	outFile<<innovation_num<<" ";
-	outFile<<mutation_num<<" ";
-    outFile<<enable<<std::endl;
 }

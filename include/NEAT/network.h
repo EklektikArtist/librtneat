@@ -26,6 +26,8 @@
 
 namespace NEAT {
 
+    class Genome;
+
 	// ----------------------------------------------------------------------- 
 	// A NETWORK is a LIST of input NODEs and a LIST of output NODEs           
 	//   The point of the network is to define a single entity which can evolve
@@ -111,7 +113,7 @@ namespace NEAT {
 		void override_outputs(double*);
 
 		// Name the network
-		void give_name(const char*);
+		void give_name(char*);
 
 		// Counts the number of nodes in the net if not yet counted
 		int nodecount();
@@ -132,7 +134,7 @@ namespace NEAT {
 		bool outputsoff();
 
 		// Just print connections weights with carriage returns
-		void print_links_tofile(const char *filename);
+		void print_links_tofile(char *filename);
 
 		int max_depth();
 

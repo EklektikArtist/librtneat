@@ -17,8 +17,8 @@
 // Modifications made by David Roberts <d@vidr.cc>, 2010.
 
 #include "nnode.h"
-#include <iostream>
 #include <sstream>
+
 using namespace NEAT;
 
 NNode::NNode(nodetype ntype,int nodeid) {
@@ -126,28 +126,6 @@ NNode::NNode (const char *argline, std::vector<Trait*> &traits) {
 	override=false;
 }
 
-// This one might be incomplete
-NNode::NNode (const NNode& nnode)
-{
-	active_flag = nnode.active_flag;
-	activesum = nnode.activesum;
-	activation = nnode.activation;
-	output = nnode.output;
-	last_activation = nnode.last_activation;
-	last_activation2 = nnode.last_activation2;
-	type = nnode.type; //NEURON or SENSOR type
-	activation_count = nnode.activation_count; //Inactive upon creation
-	node_id = nnode.node_id;
-	ftype = nnode.ftype;
-	nodetrait = nnode.nodetrait;
-	gen_node_label = nnode.gen_node_label;
-	dup = nnode.dup;
-	analogue = nnode.dup;
-	frozen = nnode.frozen;
-	trait_id = nnode.trait_id;
-	override = nnode.override;
-}
-
 NNode::~NNode() {
 	std::vector<Link*>::iterator curlink;
 
@@ -163,12 +141,6 @@ const nodetype NNode::get_type() {
 	return type;
 }
 
-//Allows alteration between NEURON and SENSOR.  Returns its argument
-nodetype NNode::set_type(nodetype newtype) {
-	type=newtype;
-	return newtype;
-}
-
 //If the node is a SENSOR, returns true and loads the value
 bool NNode::sensor_load(double value) {
 	if (type==SENSOR) {
@@ -182,27 +154,6 @@ bool NNode::sensor_load(double value) {
 		return true;
 	}
 	else return false;
-}
-
-// Note: NEAT keeps track of which links are recurrent and which
-// are not even though this is unnecessary for activation.
-// It is useful to do so for 2 other reasons: 
-// 1. It makes networks visualization of recurrent networks possible
-// 2. It allows genetic control of the proportion of connections
-//    that may become recurrent
-
-// Add an incoming connection a node
-void NNode::add_incoming(NNode *feednode,double weight,bool recur) {
-	Link *newlink=new Link(weight,feednode,this,recur);
-	incoming.push_back(newlink);
-	(feednode->outgoing).push_back(newlink);
-}
-
-// Nonrecurrent version
-void NNode::add_incoming(NNode *feednode,double weight) {
-	Link *newlink=new Link(weight,feednode,this,false);
-	incoming.push_back(newlink);
-	(feednode->outgoing).push_back(newlink);
 }
 
 // Return activation currently in node, if it has been activated
@@ -248,78 +199,6 @@ void NNode::flushback() {
 		activation=0;
 		last_activation=0;
 		last_activation2=0;
-
-	}
-
-}
-
-// This recursively checks everything leading into and including this NNode, 
-// including recurrencies
-// Useful for debugging
-void NNode::flushback_check(std::vector<NNode*> &seenlist) {
-	std::vector<Link*>::iterator curlink;
-	//int pause;
-	std::vector<Link*> innodes=incoming;
-	std::vector<NNode*>::iterator location;
-
-	if (!(type==SENSOR)) {
-
-
-		//std::cout<<"ALERT: "<<this<<" has activation count "<<activation_count<<std::endl;
-		//std::cout<<"ALERT: "<<this<<" has activation  "<<activation<<std::endl;
-		//std::cout<<"ALERT: "<<this<<" has last_activation  "<<last_activation<<std::endl;
-		//std::cout<<"ALERT: "<<this<<" has last_activation2  "<<last_activation2<<std::endl;
-
-		if (activation_count>0) {
-			std::cout<<"ALERT: "<<this<<" has activation count "<<activation_count<<std::endl;
-		}
-
-		if (activation>0) {
-			std::cout<<"ALERT: "<<this<<" has activation  "<<activation<<std::endl;
-		}
-
-		if (last_activation>0) {
-			std::cout<<"ALERT: "<<this<<" has last_activation  "<<last_activation<<std::endl;
-		}
-
-		if (last_activation2>0) {
-			std::cout<<"ALERT: "<<this<<" has last_activation2  "<<last_activation2<<std::endl;
-		}
-
-		for(curlink=innodes.begin();curlink!=innodes.end();++curlink) {
-            location = std::find(seenlist.begin(),seenlist.end(),((*curlink)->in_node));
-			if (location==seenlist.end()) {
-				seenlist.push_back((*curlink)->in_node);
-				((*curlink)->in_node)->flushback_check(seenlist);
-			}
-		}
-
-	}
-	else {
-		//Flush_check the SENSOR
-
-
-		std::cout<<"sALERT: "<<this<<" has activation count "<<activation_count<<std::endl;
-		std::cout<<"sALERT: "<<this<<" has activation  "<<activation<<std::endl;
-		std::cout<<"sALERT: "<<this<<" has last_activation  "<<last_activation<<std::endl;
-		std::cout<<"sALERT: "<<this<<" has last_activation2  "<<last_activation2<<std::endl;
-
-
-		if (activation_count>0) {
-			std::cout<<"ALERT: "<<this<<" has activation count "<<activation_count<<std::endl;
-		}
-
-		if (activation>0) {
-			std::cout<<"ALERT: "<<this<<" has activation  "<<activation<<std::endl;
-		}
-
-		if (last_activation>0) {
-			std::cout<<"ALERT: "<<this<<" has last_activation  "<<last_activation<<std::endl;
-		}
-
-		if (last_activation2>0) {
-			std::cout<<"ALERT: "<<this<<" has last_activation2  "<<last_activation2<<std::endl;
-		}
 
 	}
 
@@ -372,58 +251,4 @@ void NNode::print_to_file(std::ofstream &outFile) {
   else outFile<<"0 ";
   outFile<<type<<" ";
   outFile<<gen_node_label<<std::endl;
-}
-
-
-void NNode::print_to_file(std::ostream &outFile) {
-	//outFile<<"node "<<node_id<<" ";
-	//if (nodetrait!=0) outFile<<nodetrait->trait_id<<" ";
-	//else outFile<<"0 ";
-	//outFile<<type<<" ";
-	//outFile<<gen_node_label<<std::endl;
-
-	char tempbuf[128];
-	sprintf(tempbuf, "node %d ", node_id);
-	outFile << tempbuf;
-
-	if (nodetrait != 0) {
-		char tempbuf2[128];
-		sprintf(tempbuf2, "%d ", nodetrait->trait_id);
-		outFile << tempbuf2;
-	}
-	else outFile << "0 ";
-
-	char tempbuf2[128];
-	sprintf(tempbuf2, "%d %d\n", type, gen_node_label);
-	outFile << tempbuf2;
-}
-
-//Find the greatest depth starting from this neuron at depth d
-int NNode::depth(int d, Network *mynet) {
-  std::vector<Link*> innodes=this->incoming;
-  std::vector<Link*>::iterator curlink;
-  int cur_depth; //The depth of the current node
-  int max=d; //The max depth
-
-  if (d>100) {
-    //std::cout<<mynet->genotype<<std::endl;
-    //std::cout<<"** DEPTH NOT DETERMINED FOR NETWORK WITH LOOP"<<std::endl;
-    return 10;
-  }
-
-  //Base Case
-  if ((this->type)==SENSOR)
-    return d;
-  //Recursion
-  else {
-
-    for(curlink=innodes.begin();curlink!=innodes.end();++curlink) {
-      cur_depth=((*curlink)->in_node)->depth(d+1,mynet);
-      if (cur_depth>d) max=cur_depth;
-    }
-  
-    return max;
-
-  } //end else
-
 }

@@ -49,7 +49,6 @@ namespace NEAT {
 		bool checked;
 		bool obliterate;  //Allows killing off in competitive coevolution stagnation
 		std::vector<Organism*> organisms; //The organisms in the Species
-		//std::vector<Organism*> reproduction_pool;  //The organisms for reproduction- NOT NEEDED 
 		int age_of_last_improvement;  //If this is too long ago, the Species will goes extinct
 		double average_est; //When playing real-time allows estimating average fitness
 

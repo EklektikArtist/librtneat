@@ -17,16 +17,8 @@
 // Modifications made by David Roberts <d@vidr.cc>, 2010.
 
 #include "trait.h"
-
-#include <iostream>
 #include <sstream>
 using namespace NEAT;
-
-Trait::Trait () {
-	for (int count=0;count<NEAT::num_trait_params;count++)
-		params[count]=0;
-	trait_id=0;
-}
 
 Trait::Trait(int id,double p1,double p2,double p3,double p4,double p5,double p6,double p7,double p8,double p9) {
 	trait_id=id;
@@ -40,14 +32,6 @@ Trait::Trait(int id,double p1,double p2,double p3,double p4,double p5,double p6,
 	params[7]=0;
 }
 
-Trait::Trait(const Trait& t) {
-	for(int count=0; count < NEAT::num_trait_params; count++)
-		params[count]=(t.params)[count];
-
-	trait_id = t.trait_id;
-}
-
-
 Trait::Trait(Trait *t) {
 	for(int count=0;count<NEAT::num_trait_params;count++)
 		params[count]=(t->params)[count];
@@ -55,18 +39,17 @@ Trait::Trait(Trait *t) {
 	trait_id=t->trait_id;
 }
 
-
 Trait::Trait(const char *argline) {
 
     std::stringstream ss(argline);
 	//Read in trait id
- //   std::string curword;
+    //std::string curword;
 	//char delimiters[] = " \n";
 	//int curwordnum = 0;
 
 	//strcpy(curword, NEAT::getUnit(argline, curwordnum++, delimiters));
     
-//	trait_id = atoi(curword);
+	//trait_id = atoi(curword);
     ss >> trait_id;
 
     //std::cout << ss.str() << " trait_id: " << trait_id << std::endl;
@@ -94,27 +77,6 @@ void Trait::print_to_file(std::ofstream &outFile) {
 
   outFile<<std::endl;
 
-}
-
-
-void Trait::print_to_file(std::ostream &outFile) { 
-
-	//outFile<<"trait "<<trait_id<<" ";
-	//for(int count=0;count<NEAT::num_trait_params;count++)
-	//	outFile<<params[count]<<" ";
-	//outFile<<endl;
-
-	char tempbuf[128];
-	sprintf(tempbuf, "trait %d ", trait_id);
-	outFile << tempbuf;
-
-	for (int count = 0; count<NEAT::num_trait_params;count++) {
-		char tempbuf2[128];
-		sprintf(tempbuf2, "%f ", params[count]);
-		outFile << tempbuf2;
-	}
-
-    outFile << std::endl;
 }
 
 void Trait::mutate() {

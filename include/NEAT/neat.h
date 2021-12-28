@@ -20,6 +20,7 @@
 #define _NEAT_NEAT_H_
 
 #include <cstdlib>
+#include <cstring>
 
 namespace NEAT {
 
