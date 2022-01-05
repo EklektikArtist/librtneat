@@ -2598,10 +2598,8 @@ void NEAT::print_Genome_tofile(Genome *g,const char *filename) {
 
 	//ofstream oFile(filename,ios::out);
 
-    std::string file = "nero/data/neat/";
-    file += filename;
     //strcpyl(file, 100, "nero/data/neat/", filename, 0);
-	std::ofstream oFile(file.c_str());
+	std::ofstream oFile(filename);
 //	oFile.open(file, std::ostream::Write);
 
 	//Make sure	it worked

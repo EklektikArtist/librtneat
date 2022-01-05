@@ -266,24 +266,7 @@ Organism* Population::remove_worst() {
 	}
 
 	if (org_to_kill) {
-
-//		printf("Org to kill: species = %d\n",org_to_kill->species->id);
-
-		//Remove the organism from its species and the population
-		orgs_species->remove_org(org_to_kill);  //Remove from species
-		delete org_to_kill;  //Delete the organism itself 
-		organisms.erase(deadorg); //Remove from population list
-
-		//Did the species become empty?
-		if ((orgs_species->organisms.size())==0) {
-
-			remove_species(orgs_species);
-			delete orgs_species;
-		}
-		//If not, re-estimate the species average after removing the organism
-		else {
-			orgs_species->estimate_average();
-		}
+        remove_org( org_to_kill );
 	}
 
 	return org_to_kill;
@@ -345,6 +328,35 @@ void Population::reassign_species(Organism *org) {
 			switch_species(org,org->species,newspecies);
 		}
 
+}
+
+//Remove the organism from its species and the population
+void Population::remove_org(Organism *org_to_kill) {
+	
+	std::vector<Organism*>::iterator deadorg;
+
+	Species *orgs_species; //The species of the dead organism
+	orgs_species=(org_to_kill)->species;
+	orgs_species->remove_org(org_to_kill);  //Remove from species
+	delete org_to_kill;  //Delete the organism itself 
+    
+	for(deadorg=organisms.begin();deadorg!=organisms.end();++deadorg) {
+		if (*deadorg == org_to_kill )
+		    {
+	        organisms.erase(deadorg); //Remove from population list
+            break;
+		    }
+	    }
+
+	//Did the species become empty?
+	if ((orgs_species->organisms.size())==0) {
+		remove_species(orgs_species);
+		delete orgs_species;
+	}
+	//If not, re-estimate the species average after removing the organism
+	else {
+		orgs_species->estimate_average();
+	}
 }
 
 //Move an Organism from one Species to another

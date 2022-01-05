@@ -127,6 +127,8 @@ namespace NEAT {
 		//It is meant to be used so that we can reasses where Organisms should belong
 		//as the speciation threshold changes.
         void reassign_species(Organism *org);
+        
+        void Population::remove_org(Organism *org);
 
 		//Move an Organism from one Species to another (called by reassign_species)
 		void switch_species(Organism *org, Species *orig_species, Species *new_species);
