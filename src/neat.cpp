@@ -16,7 +16,7 @@
 
 // Modifications made by David Roberts <d@vidr.cc>, 2010.
 
-#include "code/main.h"
+#include "T:\tesselations\code\main.h"
 #include "neat.h"
 
 int NEAT::time_alive_minimum = 0;
