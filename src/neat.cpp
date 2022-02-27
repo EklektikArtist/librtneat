@@ -16,12 +16,7 @@
 
 // Modifications made by David Roberts <d@vidr.cc>, 2010.
 
-#if defined(_WIN32) || defined(_WIN64)
-#include "T:\tesselations\code\main.h"
-#else
-#include "..\code\main.h"
-#endif
-
+#include "../../../code/main.h"
 #include "neat.h"
 
 int NEAT::time_alive_minimum = 0;
