@@ -1315,8 +1315,8 @@ bool Genome::mutate_add_link(std::vector<Innovation*> &innovs,double &curinnov,i
 					recurflag=phenotype->is_recur(nodep1->analogue,nodep2->analogue,count,thresh);
 
 					//ADDED: CONSIDER connections out of outputs recurrent
-					if (((nodep1->type)==OUTPUT)||
-						((nodep2->type)==OUTPUT))
+					if (((nodep1->type)==NEURON)||
+						((nodep2->type)==NEURON))
 						recurflag=true;
 
 					//Exit if the network is faulty (contains an infinite loop)
@@ -1381,8 +1381,8 @@ bool Genome::mutate_add_link(std::vector<Innovation*> &innovs,double &curinnov,i
 					recurflag=phenotype->is_recur(nodep1->analogue,nodep2->analogue,count,thresh);
 
 					//ADDED: CONSIDER connections out of outputs recurrent
-					if (((nodep1->type)==OUTPUT)||
-						((nodep2->type)==OUTPUT))
+					if (((nodep1->type)==NEURON)||
+						((nodep2->type)==NEURON))
 						recurflag=true;
 
 					//Exit if the network is faulty (contains an infinite loop)
