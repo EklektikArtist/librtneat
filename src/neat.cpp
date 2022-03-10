@@ -43,7 +43,7 @@ double NEAT::mate_multipoint_avg_prob = 0.3;
 double NEAT::mate_singlepoint_prob = 0.3;
 double NEAT::mate_only_prob = 0.3; // Prob. of mating without mutation 
 double NEAT::recur_only_prob = 0.3;  // Probability of forcing selection of ONLY links that are naturally recurrent 
-int NEAT::pop_size = MAX_HUBS;  // Size of population 
+int NEAT::pop_size = MAX_SCT_HUBS;  // Size of population 
 int NEAT::newlink_tries = 1;  // Number of tries mutate_add_link will attempt to find an open link 
 
 int NEAT::getUnitCount(const char *string, const char *set)
