@@ -34,7 +34,6 @@ namespace NEAT {
 	//   i.e. The genotype and phenotype together
 	// ---------------------------------------------  
 	class Organism {
-
 	public:
 		double fitness;  //A measure of fitness for the Organism
 		double orig_fitness;  //A fitness measure that won't change during adjustments
@@ -68,8 +67,9 @@ namespace NEAT {
 		bool print_to_file(char *filename);   
 		bool write_to_file(std::ostream &outFile);
 
-		Organism(double fit, Genome *g, int gen, const char* md = 0);
-		Organism(const Organism& org);	// Copy Constructor
+		Organism(double fit, Genome *g, int gen, const char* md = 0);        
+		Organism(void);
+		//Organism(const Organism& org);	// Copy Constructor
 		~Organism();
 
 	};

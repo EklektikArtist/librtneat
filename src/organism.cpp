@@ -53,6 +53,34 @@ Organism::Organism(double fit, Genome *g,int gen, const char* md) {
 	modified = true;
 }
 
+Organism::Organism(void) {
+	fitness=0;
+	orig_fitness=fitness;
+	gnome=new Genome( 0, 0, 0, 0 );
+	net=gnome->genesis(gnome->genome_id);
+	species=0;  //Start it in no Species
+	expected_offspring=0;
+	generation=0;
+	eliminate=false;
+	error=0;
+	winner=false;
+	champion=false;
+	super_champ_offspring=0;
+
+    strcpy(metadata, "");
+
+	time_alive=0;
+
+	//DEBUG vars
+	pop_champ=false;
+	pop_champ_child=false;
+	high_fit=0;
+	mut_struct_baby=0;
+	mate_baby=0;
+
+	modified = true;
+}
+
 Organism::~Organism() {
 	delete net;
 	delete gnome;
