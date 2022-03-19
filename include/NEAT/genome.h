@@ -61,6 +61,8 @@ namespace NEAT {
 		void print_genome(); //Displays Genome on screen
 
 		//Constructor which takes full genome specs and puts them into the new one
+        
+		Genome(void);
 		Genome(int id, std::vector<Trait*> t, std::vector<NNode*> n, std::vector<Gene*> g);
 
 		//Constructor which takes in links (not genes) and creates a Genome

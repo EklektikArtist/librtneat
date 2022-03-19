@@ -25,10 +25,7 @@
 using namespace NEAT;
 
 Genome::Genome(int id, std::vector<Trait*> t, std::vector<NNode*> n, std::vector<Gene*> g) {
-	genome_id=id;
-	traits=t;
-	nodes=n; 
-	genes=g;
+	genome_id=0;
 }
 
 Genome::Genome(int id, std::ifstream &iFile) {

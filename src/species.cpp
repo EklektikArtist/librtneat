@@ -21,6 +21,20 @@
 
 using namespace NEAT;
 
+Species::Species(void) {
+	id=0;
+	age=1;
+	ave_fitness=0.0;
+	expected_offspring=0;
+	novel=false;
+	age_of_last_improvement=0;
+	max_fitness=0;
+	max_fitness_ever=0;
+	obliterate=false;
+
+	average_est=0;
+    }
+
 Species::Species(int i) {
 	id=i;
 	age=1;

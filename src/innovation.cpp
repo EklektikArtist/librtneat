@@ -20,6 +20,20 @@
 
 using namespace NEAT;
 
+Innovation::Innovation(void) {
+	innovation_type=NEWNODE;
+	node_in_id=0;
+	node_out_id=0;
+	innovation_num1=0;
+	innovation_num2=0;
+	newnode_id=0;
+	old_innov_num=0;
+
+	//Unused parameters set to zero
+	new_weight=0;
+	new_traitnum=0;
+	recur_flag=false;
+}
 Innovation::Innovation(int nin,int nout,double num1,double num2,int newid,double oldinnov) {
 	innovation_type=NEWNODE;
 	node_in_id=nin;

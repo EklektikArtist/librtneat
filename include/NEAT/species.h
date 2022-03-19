@@ -48,7 +48,7 @@ namespace NEAT {
 		bool novel;
 		bool checked;
 		bool obliterate;  //Allows killing off in competitive coevolution stagnation
-		std::vector<Organism*> organisms; //The organisms in the Species
+		std::vector<Organism> organisms; //The organisms in the Species
 		int age_of_last_improvement;  //If this is too long ago, the Species will goes extinct
 		double average_est; //When playing real-time allows estimating average fitness
 
@@ -108,7 +108,8 @@ namespace NEAT {
 		//      sorted_species.sort(order_species);
 		Organism *reproduce_one(int generation, Population *pop,std::vector<Species*> &sorted_species);
 //		Organism *reproduce_one(int generation, Population *pop,Vector<Species*> &sorted_species, bool addAdv, Genome* adv);
-
+        
+		Species(void);
 		Species(int i);
 
 		//Allows the creation of a Species that won't age (a novel one)
