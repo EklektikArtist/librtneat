@@ -49,11 +49,11 @@ namespace NEAT {
 	public:
 		int genome_id;
 
-		std::vector<Trait*> traits; //parameter conglomerations
-		std::vector<NNode*> nodes; //List of NNodes for the Network
-		std::vector<Gene*> genes; //List of innovation-tracking genes
+		std::vector<Trait> traits; //parameter conglomerations
+		std::vector<NNode> nodes; //List of NNodes for the Network
+		std::vector<Gene> genes; //List of innovation-tracking genes
 
-		Network *phenotype; //Allows Genome to be matched with its Network
+		Network phenotype; //Allows Genome to be matched with its Network
 
 		int get_last_node_id(); //Return id of final NNode in Genome
 		double get_last_gene_innovnum(); //Return last innovation number in Genome
@@ -141,12 +141,12 @@ namespace NEAT {
 		//   Generally, if they fail, they can be called again if desired. 
 
 		// Mutate genome by adding a node respresentation 
-		bool mutate_add_node(std::vector<Innovation*> &innovs,int &curnode_id,double &curinnov);
+		bool mutate_add_node(std::vector<Innovation> &innovs,int &curnode_id,double &curinnov);
 
 		// Mutate the genome by adding a new link between 2 random NNodes 
-		bool mutate_add_link(std::vector<Innovation*> &innovs,double &curinnov,int tries); 
+		bool mutate_add_link(std::vector<Innovation> &innovs,double &curinnov,int tries); 
 
-		void mutate_add_sensor(std::vector<Innovation*> &innovs, double &curinnov);
+		void mutate_add_sensor(std::vector<Innovation> &innovs, double &curinnov);
 
 		// ****** MATING METHODS ***** 
 

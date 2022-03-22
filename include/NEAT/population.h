@@ -49,7 +49,7 @@ namespace NEAT {
 
         std::vector<Organism*> organisms; //The organisms in the Population
 
-        std::vector<Species*> species;  // Species in the Population. Note that the species should comprise all the genomes 
+        std::vector<Species> species;  // Species in the Population. Note that the species should comprise all the genomes 
 
 		// ******* Member variables used during reproduction *******
         std::vector<Innovation*> innovations;  // For holding the genetic innovations of the newest generation

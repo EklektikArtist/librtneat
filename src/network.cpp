@@ -20,7 +20,15 @@
 
 using namespace NEAT;
 
-Network::Network(std::vector<NNode*> in,std::vector<NNode*> out,std::vector<NNode*> all,int netid) {
+Network::Network(void) {
+  name=0;   //Defaults to no name  ..NOTE: TRYING TO PRINT AN EMPTY NAME CAN CAUSE A CRASH
+  numnodes=-1;
+  numlinks=-1;
+  net_id=0;
+  adaptable=false;
+}
+
+Network::Network(std::vector<NNode> in,std::vector<NNode> out,std::vector<NNode> all,int netid) {
   inputs=in;
   outputs=out;
   all_nodes=all;
@@ -41,19 +49,19 @@ Network::~Network() {
 
 // Puts the network back into an initial state
 void Network::flush() {
-	std::vector<NNode*>::iterator curnode;
+	std::vector<NNode>::iterator curnode;
 
 	for(curnode=outputs.begin();curnode!=outputs.end();++curnode) {
-		(*curnode)->flushback();
+		(curnode)->flushback();
 	}
 }
 
 // If all output are not active then return true
 bool Network::outputsoff() {
-	std::vector<NNode*>::iterator curnode;
+	std::vector<NNode>::iterator curnode;
 
 	for(curnode=outputs.begin();curnode!=outputs.end();++curnode) {
-		if (((*curnode)->activation_count)==0) return true;
+		if (((curnode)->activation_count)==0) return true;
 	}
 
 	return false;
@@ -62,8 +70,8 @@ bool Network::outputsoff() {
 // Activates the net such that all outputs are active
 // Returns true on success;
 bool Network::activate() {
-	std::vector<NNode*>::iterator curnode;
-	std::vector<Link*>::iterator curlink;
+	std::vector<NNode>::iterator curnode;
+	std::vector<Link>::iterator curlink;
 	double add_amount;  //For adding to the activesum
 	bool onetime; //Make sure we at least activate once
 	int abortcount=0;  //Used in case the output is somehow truncated from the network

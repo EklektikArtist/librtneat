@@ -1013,7 +1013,7 @@ void Genome::mutate_gene_reenable() {
 
 }
 
-bool Genome::mutate_add_node(std::vector<Innovation*> &innovs,int &curnode_id,double &curinnov) {
+bool Genome::mutate_add_node(std::vector<Innovation> &innovs,int &curnode_id,double &curinnov) {
 	std::vector<Gene*>::iterator thegene;  //random gene containing the original link
 	int genenum;  //The random gene number
 	NNode *in_node; //Here are the nodes connected by the gene

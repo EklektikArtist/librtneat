@@ -66,13 +66,13 @@ namespace NEAT {
 		// of a recurrent link is one time step ahead of the outnode.
 		// The innode then needs to send from TWO time steps ago
 
-		Trait *nodetrait; // Points to a trait of parameters
+		Trait nodetrait; // Points to a trait of parameters
 
 		int trait_id;  // identify the trait derived by this node
 
-		NNode *dup;       // Used for Genome duplication
+		//NNNode dup;       // Used for Genome duplication
 
-		NNode *analogue;  // Used for Gene decoding
+		//NNode analogue;  // Used for Gene decoding
 
 		bool override; // The NNode cannot compute its own output- something is overriding it
 
@@ -113,7 +113,8 @@ namespace NEAT {
 		int node_id;  // A node can be given an identification number for saving in files
 
 		nodeplace gen_node_label;  // Used for genetic marking of nodes
-
+        
+		NNode(void);
 		NNode(nodetype ntype,int nodeid);
 
 		NNode(nodetype ntype,int nodeid, nodeplace placement);

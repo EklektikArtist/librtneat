@@ -21,7 +21,7 @@
 
 #include "neat.h"
 #include "organism.h"
-#include "population.h"
+#include "..\code\cls_population.h"
 
 namespace NEAT {
 
@@ -52,7 +52,7 @@ namespace NEAT {
 		int age_of_last_improvement;  //If this is too long ago, the Species will goes extinct
 		double average_est; //When playing real-time allows estimating average fitness
 
-		bool add_Organism(Organism *o);
+		bool add_Organism(Organism o);
 
 		Organism *first();
 
@@ -77,7 +77,7 @@ namespace NEAT {
 		}
 
 		//Remove an organism from Species
-		bool remove_org(Organism *org);
+		bool remove_org(Organism org);
 
 		double size() {
 			return organisms.size();

@@ -42,9 +42,9 @@ namespace NEAT {
 		int numnodes; // The number of nodes in the net (-1 means not yet counted)
 		int numlinks; //The number of links in the net (-1 means not yet counted)
 
-		std::vector<NNode*> all_nodes;  // A list of all the nodes
+		std::vector<NNode> all_nodes;  // A list of all the nodes
 
-		std::vector<NNode*>::iterator input_iter;  // For GUILE network inputting  
+		std::vector<NNode>::iterator input_iter;  // For GUILE network inputting  
 
 		void destroy();  // Kills all nodes and links within
 		void destroy_helper(NNode *curnode,std::vector<NNode*> &seenlist); // helper for above
@@ -57,8 +57,8 @@ namespace NEAT {
 		Genome *genotype;  // Allows Network to be matched with its Genome
 
 		char *name; // Every Network or subNetwork can have a name
-		std::vector<NNode*> inputs;  // NNodes that input into the network
-		std::vector<NNode*> outputs; // Values output by the network
+		std::vector<NNode> inputs;  // NNodes that input into the network
+		std::vector<NNode> outputs; // Values output by the network
 
 		int net_id; // Allow for a network id
 
@@ -68,10 +68,11 @@ namespace NEAT {
 
 		// This constructor allows the input and output lists to be supplied
 		// Defaults to not using adaptation
-		Network(std::vector<NNode*> in,std::vector<NNode*> out,std::vector<NNode*> all,int netid);
+        Network(void);
+		Network(std::vector<NNode> in,std::vector<NNode> out,std::vector<NNode> all,int netid);
 
 		//Same as previous constructor except the adaptibility can be set true or false with adaptval
-		Network(std::vector<NNode*> in,std::vector<NNode*> out,std::vector<NNode*> all,int netid, bool adaptval);
+		Network(std::vector<NNode> in,std::vector<NNode> out,std::vector<NNode> all,int netid, bool adaptval);
 
 		// This constructs a net with empty input and output lists
 		Network(int netid);

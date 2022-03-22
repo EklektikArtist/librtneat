@@ -21,6 +21,25 @@
 
 using namespace NEAT;
 
+NNode::NNode(void) {
+	active_flag=false;
+	activesum=0;
+	activation=0;
+	output=0;
+	last_activation=0;
+	last_activation2=0;
+	type=NEURON; //NEURON or SENSOR type
+	activation_count=0; //Inactive upon creation
+	node_id=0;
+	ftype=SIGMOID;
+	gen_node_label=HIDDEN;
+	dup=0;
+	analogue=0;
+	frozen=false;
+	trait_id=1;
+	override=false;
+}
+
 NNode::NNode(nodetype ntype,int nodeid) {
 	active_flag=false;
 	activesum=0;
@@ -32,7 +51,6 @@ NNode::NNode(nodetype ntype,int nodeid) {
 	activation_count=0; //Inactive upon creation
 	node_id=nodeid;
 	ftype=SIGMOID;
-	nodetrait=0;
 	gen_node_label=HIDDEN;
 	dup=0;
 	analogue=0;
@@ -52,7 +70,6 @@ NNode::NNode(nodetype ntype,int nodeid, nodeplace placement) {
 	activation_count=0; //Inactive upon creation
 	node_id=nodeid;
 	ftype=SIGMOID;
-	nodetrait=0;
 	gen_node_label=placement;
 	dup=0;
 	analogue=0;
@@ -71,7 +88,6 @@ NNode::NNode(NNode *n,Trait *t) {
 	activation_count=0; //Inactive upon creation
 	node_id=n->node_id;
 	ftype=SIGMOID;
-	nodetrait=0;
 	gen_node_label=n->gen_node_label;
 	dup=0;
 	analogue=0;
@@ -114,13 +130,14 @@ NNode::NNode (const char *argline, std::vector<Trait*> &traits) {
 	frozen=false;  //TODO: Maybe change
 
 	//Get a pointer to the trait this node points to
-	if (traitnum==0) nodetrait=0;
+	if (traitnum==0)
+    {}
 	else {
 		curtrait=traits.begin();
 		while(((*curtrait)->trait_id)!=traitnum)
 			++curtrait;
 		nodetrait=(*curtrait);
-		trait_id=nodetrait->trait_id;
+		trait_id=nodetrait.trait_id;
 	}
 
 	override=false;
@@ -247,8 +264,7 @@ void NNode::activate_override() {
 
 void NNode::print_to_file(std::ofstream &outFile) {
   outFile<<"node "<<node_id<<" ";
-  if (nodetrait!=0) outFile<<nodetrait->trait_id<<" ";
-  else outFile<<"0 ";
+  outFile<<nodetrait.trait_id<<" ";
   outFile<<type<<" ";
   outFile<<gen_node_label<<std::endl;
 }
