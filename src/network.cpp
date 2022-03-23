@@ -98,62 +98,62 @@ bool Network::activate() {
 		for(curnode=all_nodes.begin();curnode!=all_nodes.end();++curnode) {
 			//Ignore SENSORS
 
-			//cout<<"On node "<<(*curnode)->node_id<<endl;
+			//cout<<"On node "<<(curnode)->node_id<<endl;
 
-			if (((*curnode)->type)!=SENSOR) {
-				(*curnode)->activesum=0;
-				(*curnode)->active_flag=false;  //This will tell us if it has any active inputs
+			if (((curnode)->type)!=SENSOR) {
+				(curnode)->activesum=0;
+				(curnode)->active_flag=false;  //This will tell us if it has any active inputs
 
 				// For each incoming connection, add the activity from the connection to the activesum 
-				for(curlink=((*curnode)->incoming).begin();curlink!=((*curnode)->incoming).end();++curlink) {
+				for(curlink=(curnode->incoming).begin();curlink!=((curnode)->incoming).end();++curlink) {
 					//Handle possible time delays
 					if (!((*curlink)->time_delay)) {
 						add_amount=((*curlink)->weight)*(((*curlink)->in_node)->get_active_out());
 						if ((((*curlink)->in_node)->active_flag)||
-							(((*curlink)->in_node)->type==SENSOR)) (*curnode)->active_flag=true;
-						(*curnode)->activesum+=add_amount;
-						//std::cout<<"Node "<<(*curnode)->node_id<<" adding "<<add_amount<<" from node "<<((*curlink)->in_node)->node_id<<std::endl;
+							(((*curlink)->in_node)->type==SENSOR)) (curnode)->active_flag=true;
+						(curnode)->activesum+=add_amount;
+						//std::cout<<"Node "<<(curnode)->node_id<<" adding "<<add_amount<<" from node "<<((*curlink)->in_node)->node_id<<std::endl;
 					}
 					else {
 						//Input over a time delayed connection
 						add_amount=((*curlink)->weight)*(((*curlink)->in_node)->get_active_out_td());
-						(*curnode)->activesum+=add_amount;
+						(curnode)->activesum+=add_amount;
 					}
 
 				} //End for over incoming links
 
-			} //End if (((*curnode)->type)!=SENSOR) 
+			} //End if (((curnode)->type)!=SENSOR) 
 
 		} //End for over all nodes
 
 		// Now activate all the non-sensor nodes off their incoming activation 
 		for(curnode=all_nodes.begin();curnode!=all_nodes.end();++curnode) {
 
-			if (((*curnode)->type)!=SENSOR) {
+			if (((curnode)->type)!=SENSOR) {
 				//Only activate if some active input came in
-				if ((*curnode)->active_flag) {
-					//cout<<"Activating "<<(*curnode)->node_id<<" with "<<(*curnode)->activesum<<": ";
+				if ((curnode)->active_flag) {
+					//cout<<"Activating "<<(curnode)->node_id<<" with "<<(curnode)->activesum<<": ";
 
 					//Keep a memory of activations for potential time delayed connections
-					(*curnode)->last_activation2=(*curnode)->last_activation;
-					(*curnode)->last_activation=(*curnode)->activation;
+					(curnode)->last_activation2=(curnode)->last_activation;
+					(curnode)->last_activation=(curnode)->activation;
 
 					//If the node is being overrided from outside,
 					//stick in the override value
-					if ((*curnode)->overridden()) {
+					if ((curnode)->overridden()) {
 						//Set activation to the override value and turn off override
-						(*curnode)->activate_override();
+						(curnode)->activate_override();
 					}
 					else {
 						//Now run the net activation through an activation function
-						if ((*curnode)->ftype==SIGMOID)
-							(*curnode)->activation=NEAT::fsigmoid((*curnode)->activesum,4.924273,2.4621365);  //Sigmoidal activation- see comments under fsigmoid
+						if ((curnode)->ftype==SIGMOID)
+							(curnode)->activation=NEAT::fsigmoid((curnode)->activesum,4.924273,2.4621365);  //Sigmoidal activation- see comments under fsigmoid
 					}
-					//cout<<(*curnode)->activation<<endl;
+					//cout<<(curnode)->activation<<endl;
 
 					//Increment the activation_count
 					//First activation cannot be from nothing!!
-					(*curnode)->activation_count++;
+					(curnode)->activation_count++;
 				}
 			}
 		}
@@ -169,12 +169,12 @@ bool Network::activate() {
 	  for(curnode=all_nodes.begin();curnode!=all_nodes.end();++curnode) {
 	    //Ignore SENSORS
 	    
-	    //cout<<"On node "<<(*curnode)->node_id<<endl;
+	    //cout<<"On node "<<(curnode)->node_id<<endl;
 	    
-	    if (((*curnode)->type)!=SENSOR) {
+	    if (((curnode)->type)!=SENSOR) {
 	      
 	      // For each incoming connection, perform adaptation based on the trait of the connection 
-	      for(curlink=((*curnode)->incoming).begin();curlink!=((*curnode)->incoming).end();++curlink) {
+	      for(curlink=((curnode)->incoming).begin();curlink!=((curnode)->incoming).end();++curlink) {
 		
 		if (((*curlink)->trait_id==2)||
 		    ((*curlink)->trait_id==3)||
@@ -239,7 +239,7 @@ void Network::destroy() {
 	// Erase all nodes from all_nodes list 
 
 	for(curnode=all_nodes.begin();curnode!=all_nodes.end();++curnode) {
-		delete (*curnode);
+		delete (curnode);
 	}
 
 
@@ -252,16 +252,16 @@ void Network::destroy() {
 	//cout<<curnode<<endl;
 	//cout<<curnode->node_id<<endl;
 
-	//  location=find(seenlist.begin(),seenlist.end(),(*curnode));
+	//  location=find(seenlist.begin(),seenlist.end(),(curnode));
 	//  if (location==seenlist.end()) {
-	//    seenlist.push_back(*curnode);
-	//    destroy_helper((*curnode),seenlist);
+	//    seenlist.push_back(curnode);
+	//    destroy_helper((curnode),seenlist);
 	//  }
 	//}
 
 	//Now destroy the seenlist, which is all the NNodes in the network
 	//for(curnode=seenlist.begin();curnode!=seenlist.end();++curnode) {
-	//  delete (*curnode);
+	//  delete (curnode);
 	//}
 }
 

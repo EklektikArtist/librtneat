@@ -20,18 +20,18 @@
 
 using namespace NEAT;
 
-Link::Link(double w,NNode *inode,NNode *onode,bool recur) {
+Link::Link(double w,NNode inode,NNode onode,bool recur) {
 	weight=w;
 	in_node=inode;
 	out_node=onode;
 	is_recurrent=recur;
 	added_weight=0;
-	linktrait=0;
 	time_delay=false;
 	trait_id=1;
+    memset( params, 0, sizeof( params ) );
 }
 
-Link::Link(Trait *lt,double w,NNode *inode,NNode *onode,bool recur) {
+Link::Link(Trait lt,double w,NNode inode,NNode onode,bool recur) {
 	weight=w;
 	in_node=inode;
 	out_node=onode;
@@ -39,9 +39,15 @@ Link::Link(Trait *lt,double w,NNode *inode,NNode *onode,bool recur) {
 	added_weight=0;
 	linktrait=lt;
 	time_delay=false;
-	if (lt!=0)
-		trait_id=lt->trait_id;
-	else trait_id=1;
+	trait_id=lt.trait_id;
+	memset( params, 0, sizeof( params ) );
+}
+
+Link::Link(void) {
+	weight=0;
+	is_recurrent=false;
+	added_weight=0;
+	time_delay=false;
 }	
 
 void Link::derive_trait(Trait *curtrait) {
