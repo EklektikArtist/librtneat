@@ -70,9 +70,9 @@ namespace NEAT {
 
 		int trait_id;  // identify the trait derived by this node
 
-		//NNNode dup;       // Used for Genome duplication
+		NNode *dup;       // Used for Genome duplication
 
-		//NNode analogue;  // Used for Gene decoding
+		NNode *analogue;  // Used for Gene decoding
 
 		bool override; // The NNode cannot compute its own output- something is overriding it
 
@@ -101,8 +101,8 @@ namespace NEAT {
 
 		double params[NEAT::num_trait_params];
 
-		std::vector<Link*> incoming; // A list of pointers to incoming weighted signals from other nodes
-		std::vector<Link*> outgoing;  // A list of pointers to links carrying this node's signal
+		std::vector<Link> incoming; // A list of pointers to incoming weighted signals from other nodes
+		std::vector<Link> outgoing;  // A list of pointers to links carrying this node's signal
 
 		// These members are used for graphing with GTK+/GDK
 		std::vector<double> rowlevels;  // Depths from output where this node appears
@@ -123,7 +123,7 @@ namespace NEAT {
 		NNode(NNode *n,Trait *t);
 
 		// Construct the node out of a file specification using given list of traits
-		NNode (const char *argline, std::vector<Trait*> &traits);
+		NNode (const char *argline, std::vector<Trait> &traits);
 
 		// Copy Constructor
 		NNode (const NNode& nnode);

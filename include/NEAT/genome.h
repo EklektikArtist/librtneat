@@ -63,10 +63,10 @@ namespace NEAT {
 		//Constructor which takes full genome specs and puts them into the new one
         
 		Genome(void);
-		Genome(int id, std::vector<Trait*> t, std::vector<NNode*> n, std::vector<Gene*> g);
+		Genome(int id, std::vector<Trait> t, std::vector<NNode> n, std::vector<Gene> g);
 
 		//Constructor which takes in links (not genes) and creates a Genome
-		Genome(int id, std::vector<Trait*> t, std::vector<NNode*> n, std::vector<Link*> links);
+		Genome(int id, std::vector<Trait> t, std::vector<NNode> n, std::vector<Link> links);
 
 		// Copy constructor
 		Genome(const Genome& genome);
@@ -91,13 +91,13 @@ namespace NEAT {
 		Genome(int num_in,int num_out,int num_hidden,int type);
 
 		// Loads a new Genome from a file (doesn't require knowledge of Genome's id)
-		static Genome *new_Genome_load(char *filename);
+		static Genome new_Genome_load(char *filename);
 
 		//Destructor kills off all lists (including the trait vector)
 		~Genome();
 
 		//Generate a network phenotype from this Genome with specified id
-		Network *genesis(int);
+		Network genesis(int);
 
 		// Dump this genome to specified file
 		void print_to_file(std::ostream &outFile);
@@ -107,7 +107,7 @@ namespace NEAT {
 		void print_to_filename(char *filename);
 
 		// Duplicate this Genome to create a new one with the specified id 
-		Genome *duplicate(int new_id);
+		Genome duplicate(int new_id);
 
 		// For debugging: A number of tests can be run on a genome to check its
 		// integrity
@@ -157,18 +157,18 @@ namespace NEAT {
 		//   the other, the baby will inherit the innovation 
 		//   Interspecies mating leads to all genes being inherited.
 		//   Otherwise, excess genes come from most fit parent.
-		Genome *mate_multipoint(Genome *g,int genomeid,double fitness1, double fitness2, bool interspec_flag);
+		Genome mate_multipoint(Genome g,int genomeid,double fitness1, double fitness2, bool interspec_flag);
 
 		//This method mates like multipoint but instead of selecting one
 		//   or the other when the innovation numbers match, it averages their
 		//   weights 
-		Genome *mate_multipoint_avg(Genome *g,int genomeid,double fitness1,double fitness2, bool interspec_flag);
+		Genome mate_multipoint_avg(Genome g,int genomeid,double fitness1,double fitness2, bool interspec_flag);
 
 		// This method is similar to a standard single point CROSSOVER
 		//   operator.  Traits are averaged as in the previous 2 mating
 		//   methods.  A point is chosen in the smaller Genome for crossing
 		//   with the bigger one.  
-		Genome *mate_singlepoint(Genome *g,int genomeid);
+		Genome mate_singlepoint(Genome g,int genomeid);
 
 
 		// ******** COMPATIBILITY CHECKING METHODS ********

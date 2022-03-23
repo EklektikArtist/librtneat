@@ -125,7 +125,7 @@ namespace NEAT {
 		// This checks a POTENTIAL link between a potential in_node
 		// and potential out_node to see if it must be recurrent 
 		// Use count and thresh to jump out in the case of an infinite loop 
-		bool is_recur(NNode *potin_node,NNode *potout_node,int &count,int thresh); 
+		bool is_recur(NNode potin_node,NNode potout_node,int &count,int thresh); 
 
 		// Some functions to help GUILE input into Networks   
 		int input_start();

@@ -107,16 +107,16 @@ bool Network::activate() {
 				// For each incoming connection, add the activity from the connection to the activesum 
 				for(curlink=(curnode->incoming).begin();curlink!=((curnode)->incoming).end();++curlink) {
 					//Handle possible time delays
-					if (!((*curlink)->time_delay)) {
-						add_amount=((*curlink)->weight)*(((*curlink)->in_node)->get_active_out());
-						if ((((*curlink)->in_node)->active_flag)||
-							(((*curlink)->in_node)->type==SENSOR)) (curnode)->active_flag=true;
+					if (!((curlink)->time_delay)) {
+						add_amount=((curlink)->weight) * (((curlink)->in_node).get_active_out());
+						if (((((curlink)->in_node).active_flag)||
+							((curlink)->in_node).type==SENSOR)) (curnode)->active_flag=true;
 						(curnode)->activesum+=add_amount;
 						//std::cout<<"Node "<<(curnode)->node_id<<" adding "<<add_amount<<" from node "<<((*curlink)->in_node)->node_id<<std::endl;
 					}
 					else {
 						//Input over a time delayed connection
-						add_amount=((*curlink)->weight)*(((*curlink)->in_node)->get_active_out_td());
+						add_amount=((curlink)->weight)*(((curlink)->in_node).get_active_out_td());
 						(curnode)->activesum+=add_amount;
 					}
 
@@ -176,28 +176,28 @@ bool Network::activate() {
 	      // For each incoming connection, perform adaptation based on the trait of the connection 
 	      for(curlink=((curnode)->incoming).begin();curlink!=((curnode)->incoming).end();++curlink) {
 		
-		if (((*curlink)->trait_id==2)||
-		    ((*curlink)->trait_id==3)||
-		    ((*curlink)->trait_id==4)) {
+		if (((curlink)->trait_id==2)||
+		    ((curlink)->trait_id==3)||
+		    ((curlink)->trait_id==4)) {
 		  
 		  //In the recurrent case we must take the last activation of the input for calculating hebbian changes
-		  if ((*curlink)->is_recurrent) {
-		    (*curlink)->weight=
-		      hebbian((*curlink)->weight,maxweight,
-			      (*curlink)->in_node->last_activation, 
-			      (*curlink)->out_node->get_active_out(),
-			      (*curlink)->params[0],(*curlink)->params[1],
-			      (*curlink)->params[2]);
+		  if ((curlink)->is_recurrent) {
+		    (curlink)->weight=
+		      hebbian((curlink)->weight,maxweight,
+			      (curlink)->in_node.last_activation, 
+			      (curlink)->out_node.get_active_out(),
+			      (curlink)->params[0],(curlink)->params[1],
+			      (curlink)->params[2]);
 		    
 		    
 		  }
 		  else { //non-recurrent case
-		    (*curlink)->weight=
-		      hebbian((*curlink)->weight,maxweight,
-			      (*curlink)->in_node->get_active_out(), 
-			      (*curlink)->out_node->get_active_out(),
-			      (*curlink)->params[0],(*curlink)->params[1],
-			      (*curlink)->params[2]);
+		    (curlink)->weight=
+		      hebbian((curlink)->weight,maxweight,
+			      (curlink)->in_node.get_active_out(), 
+			      (curlink)->out_node.get_active_out(),
+			      (curlink)->params[0],(curlink)->params[1],
+			      (curlink)->params[2]);
 		  }
 		}
 		
@@ -215,12 +215,12 @@ bool Network::activate() {
 // Takes an array of sensor values and loads it into SENSOR inputs ONLY
 void Network::load_sensors(double *sensvals) {
 	//int counter=0;  //counter to move through array
-	std::vector<NNode*>::iterator sensPtr;
+	std::vector<NNode>::iterator sensPtr;
 
 	for(sensPtr=inputs.begin();sensPtr!=inputs.end();++sensPtr) {
 		//only load values into SENSORS (not BIASes)
-		if (((*sensPtr)->type)==SENSOR) {
-			(*sensPtr)->sensor_load(*sensvals);
+		if (((sensPtr)->type)==SENSOR) {
+			(sensPtr)->sensor_load(*sensvals);
 			sensvals++;
 		}
 	}
@@ -232,14 +232,14 @@ void Network::load_sensors(double *sensvals) {
 // Note: Traits are parts of genomes and not networks, so they are not
 //       deleted here
 void Network::destroy() {
-	std::vector<NNode*>::iterator curnode;
-	std::vector<NNode*>::iterator location;
-	std::vector<NNode*> seenlist;  //List of nodes not to doublecount
+	std::vector<NNode>::iterator curnode;
+	std::vector<NNode>::iterator location;
+	std::vector<NNode> seenlist;  //List of nodes not to doublecount
 
 	// Erase all nodes from all_nodes list 
 
 	for(curnode=all_nodes.begin();curnode!=all_nodes.end();++curnode) {
-		delete (curnode);
+		delete (&curnode);
 	}
 
 
@@ -266,8 +266,8 @@ void Network::destroy() {
 }
 
 // This checks a POTENTIAL link between a potential in_node and potential out_node to see if it must be recurrent 
-bool Network::is_recur(NNode *potin_node,NNode *potout_node,int &count,int thresh) {
-	std::vector<Link*>::iterator curlink;
+bool Network::is_recur(NNode potin_node,NNode potout_node,int &count,int thresh) {
+	std::vector<Link>::iterator curlink;
 
 
 	++count;  //Count the node as visited
@@ -277,14 +277,14 @@ bool Network::is_recur(NNode *potin_node,NNode *potout_node,int &count,int thres
 		return false;  //Short out the whole thing- loop detected
 	}
 
-	if (potin_node==potout_node) return true;
+	if (&potin_node==&potout_node) return true;
 	else {
 		//Check back on all links...
-		for(curlink=(potin_node->incoming).begin();curlink!=(potin_node->incoming).end();curlink++) {
+		for(curlink=(potin_node.incoming).begin();curlink!=(potin_node.incoming).end();curlink++) {
 			//But skip links that are already recurrent
 			//(We want to check back through the forward flow of signals only
-			if (!((*curlink)->is_recurrent)) {
-				if (is_recur((*curlink)->in_node,potout_node,count,thresh)) return true;
+			if (!((curlink)->is_recurrent)) {
+				if (is_recur((curlink)->in_node,potout_node,count,thresh)) return true;
 			}
 		}
 		return false;

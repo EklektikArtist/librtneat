@@ -33,8 +33,8 @@ NNode::NNode(void) {
 	node_id=0;
 	ftype=SIGMOID;
 	gen_node_label=HIDDEN;
-	dup=0;
-	analogue=0;
+	//dup=0;
+	//analogue=0;
 	frozen=false;
 	trait_id=1;
 	override=false;
@@ -99,9 +99,9 @@ NNode::NNode(NNode *n,Trait *t) {
 	override=false;
 }
 
-NNode::NNode (const char *argline, std::vector<Trait*> &traits) {
+NNode::NNode (const char *argline, std::vector<Trait> &traits) {
 	int traitnum;
-	std::vector<Trait*>::iterator curtrait;
+	std::vector<Trait>::iterator curtrait;
 
 	activesum=0;
 
@@ -134,7 +134,7 @@ NNode::NNode (const char *argline, std::vector<Trait*> &traits) {
     {}
 	else {
 		curtrait=traits.begin();
-		while(((*curtrait)->trait_id)!=traitnum)
+		while(((curtrait)->trait_id)!=traitnum)
 			++curtrait;
 		nodetrait=(*curtrait);
 		trait_id=nodetrait.trait_id;
@@ -144,11 +144,11 @@ NNode::NNode (const char *argline, std::vector<Trait*> &traits) {
 }
 
 NNode::~NNode() {
-	std::vector<Link*>::iterator curlink;
+	std::vector<Link>::iterator curlink;
 
 	//Kill off all incoming links
 	for(curlink=incoming.begin();curlink!=incoming.end();++curlink) {
-		delete (*curlink);
+		delete (&curlink);
 	}
 	//if (nodetrait!=0) delete nodetrait;
 }
@@ -190,7 +190,7 @@ double NNode::get_active_out_td() {
 
 // This recursively flushes everything leading into and including this NNode, including recurrencies
 void NNode::flushback() {
-	std::vector<Link*>::iterator curlink;
+	std::vector<Link>::iterator curlink;
 
 	//A sensor should not flush black
 	if (type!=SENSOR) {
@@ -205,9 +205,9 @@ void NNode::flushback() {
 		//Flush back recursively
 		for(curlink=incoming.begin();curlink!=incoming.end();++curlink) {
 			//Flush the link itself (For future learning parameters possibility) 
-			(*curlink)->added_weight=0;
-			if ((((*curlink)->in_node)->activation_count>0))
-				((*curlink)->in_node)->flushback();
+			(curlink)->added_weight=0;
+			if ((((curlink)->in_node).activation_count>0))
+				((curlink)->in_node).flushback();
 		}
 	}
 	else {

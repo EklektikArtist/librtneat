@@ -31,6 +31,15 @@ Gene::Gene(Trait tp,double w,NNode inode,NNode onode,bool recur,double innov,dou
 	frozen=false;
 }
 
+Gene::Gene(void) {
+	//cout<<"Trying to attach nodes: "<<inode<<" "<<onode<<endl;
+	innovation_num=0;
+	mutation_num=0;
+	enable=true;
+
+	frozen=false;
+}
+
 Gene::Gene(Gene g,Trait tp,NNode inode,NNode onode) {
 	//cout<<"Trying to attach nodes: "<<inode<<" "<<onode<<endl;
 	lnk=*new Link(tp,(g.lnk).weight,inode,onode,(g.lnk).is_recurrent);
