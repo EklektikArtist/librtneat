@@ -55,7 +55,7 @@ namespace NEAT {
 		Trait(const char *argline);
 
 		// Special Constructor creates a new Trait which is the average of 2 existing traits passed in
-		Trait(Trait *t1,Trait *t2);
+		Trait(Trait t1,Trait t2);
 
 		// Dump trait to a stream
 	    void print_to_file(std::ofstream &outFile);

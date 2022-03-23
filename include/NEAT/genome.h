@@ -193,11 +193,11 @@ namespace NEAT {
 
 	protected:
 		//Inserts a NNode into a given ordered list of NNodes in order
-		void node_insert(std::vector<NNode*> &nlist, NNode *n);
+		void node_insert(std::vector<NNode> &nlist, NNode n);
 
 		//Adds a new gene that has been created through a mutation in the
 		//*correct order* into the list of genes in the genome
-		void add_gene(std::vector<Gene*> &glist,Gene *g);
+		void add_gene(std::vector<Gene> &glist,Gene g);
 
 	};
 
@@ -209,7 +209,7 @@ namespace NEAT {
 	//Saves to file "auto_genome"
 	Genome *new_Genome_auto(int num_in,int num_out,int num_hidden,int type, const char *filename);
 
-	void print_Genome_tofile(Genome *g,const char *filename);
+	void print_Genome_tofile(Genome g,const char *filename);
 
 } // namespace NEAT
 
