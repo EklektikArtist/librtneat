@@ -34,12 +34,12 @@ namespace NEAT {
 	class Link {
 	public: 
 		double weight; // Weight of connection
-		NNode *in_node; // NNode inputting into the link
-		NNode *out_node; // NNode that the link affects
+		NNode in_node; // NNode inputting into the link
+		NNode out_node; // NNode that the link affects
 		bool is_recurrent;
 		bool time_delay;
 
-		Trait *linktrait; // Points to a trait of parameters for genetic creation
+		Trait linktrait; // Points to a trait of parameters for genetic creation
 
 		int trait_id;  // identify the trait derived by this link
 

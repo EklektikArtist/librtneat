@@ -29,7 +29,7 @@ namespace NEAT {
 	class Gene {
 	public:
 
-		Link *lnk;
+		Link lnk;
 		double innovation_num;
 		double mutation_num;  //Used to see how much mutation has changed the link
 		bool enable;  //When this is off the Gene is disabled
@@ -37,12 +37,14 @@ namespace NEAT {
 
 		//Construct a gene with a trait
 		Gene(Trait *tp,double w,NNode *inode,NNode *onode,bool recur,double innov,double mnum);
+		Gene(Trait *tp,double w,NNode inode,NNode onode,bool recur,double innov,double mnum);
 
 		//Construct a gene off of another gene as a duplicate
 		Gene(Gene *g,Trait *tp,NNode *inode,NNode *onode);
+		Gene(Gene g,Trait tp,NNode inode,NNode onode);
 
 		//Construct a gene from a file spec given traits and nodes
-		Gene(const char *argline, std::vector<Trait*> &traits, std::vector<NNode*> &nodes);
+		Gene(const char *argline, std::vector<Trait> &traits, std::vector<NNode> &nodes);
 
 		~Gene();
 

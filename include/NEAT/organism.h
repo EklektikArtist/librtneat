@@ -39,9 +39,9 @@ namespace NEAT {
 		double orig_fitness;  //A fitness measure that won't change during adjustments
 		double error;  //Used just for reporting purposes
 		bool winner;  //Win marker (if needed for a particular task)
-		Network *net;  //The Organism's phenotype
-		Genome *gnome; //The Organism's genotype 
-		Species *species;  //The Organism's Species 
+		Network net;  //The Organism's phenotype
+		Genome gnome; //The Organism's genotype 
+		Species species;  //The Organism's Species 
 		double expected_offspring; //Number of children this Organism may have
 		int generation;  //Tells which generation this Organism is from
 		bool eliminate;  //Marker for destruction of inferior Organisms

@@ -47,12 +47,12 @@ namespace NEAT {
 
 	public:
 
-        std::vector<Organism*> organisms; //The organisms in the Population
+        std::vector<Organism> organisms; //The organisms in the Population
 
-        std::vector<Species*> species;  // Species in the Population. Note that the species should comprise all the genomes 
+        std::vector<Species> species;  // Species in the Population. Note that the species should comprise all the genomes 
 
 		// ******* Member variables used during reproduction *******
-        std::vector<Innovation*> innovations;  // For holding the genetic innovations of the newest generation
+        std::vector<Innovation> innovations;  // For holding the genetic innovations of the newest generation
 		int cur_node_id;  //Current label number available
 		double cur_innov_num;
 
@@ -141,7 +141,7 @@ namespace NEAT {
 		
 		//MSC Addition
 		// Construct off of a vector of genomes with a mutation rate of "power"
-		Population(std::vector<Genome*> genomeList, float power);
+		Population(std::vector<Genome> genomeList, float power);
 
 		bool clone(Genome *g,int size, float power);
 

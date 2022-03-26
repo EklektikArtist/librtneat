@@ -23,8 +23,8 @@ using namespace NEAT;
 Organism::Organism(double fit, Genome *g,int gen, const char* md) {
 	fitness=fit;
 	orig_fitness=fitness;
-	gnome=g;
-	net=gnome->genesis(gnome->genome_id);
+	gnome=*g;
+	net=*gnome.genesis(gnome.genome_id);
 	species=0;  //Start it in no Species
 	expected_offspring=0;
 	generation=gen;
@@ -56,8 +56,8 @@ Organism::Organism(double fit, Genome *g,int gen, const char* md) {
 Organism::Organism(void) {
 	fitness=0;
 	orig_fitness=fitness;
-	gnome=new Genome( 0, 0, 0, 0 );
-	net=gnome->genesis(gnome->genome_id);
+	gnome=*new Genome( 0, 0, 0, 0 );
+	net=*gnome.genesis(gnome.genome_id);
 	species=0;  //Start it in no Species
 	expected_offspring=0;
 	generation=0;
@@ -82,8 +82,8 @@ Organism::Organism(void) {
 }
 
 Organism::~Organism() {
-	delete net;
-	delete gnome;
+	delete &net;
+	delete &gnome;
 }
 
 bool NEAT::order_orgs(Organism *x, Organism *y) {

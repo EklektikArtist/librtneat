@@ -86,7 +86,7 @@ namespace NEAT {
 		Organism *get_champ();
 
 		//Perform mating and mutation to form next generation
-		bool reproduce(int generation, Population *pop,std::vector<Species*> &sorted_species);
+		bool reproduce(int generation, Population *pop,std::vector<Species> &sorted_species);
 
 		// *** Real-time methods *** 
 
@@ -106,8 +106,8 @@ namespace NEAT {
 		//    Sort the Species by max fitness (Use an extra list to do this)
 		//    These need to use ORIGINAL fitness
 		//      sorted_species.sort(order_species);
-		Organism *reproduce_one(int generation, Population *pop,std::vector<Species*> &sorted_species);
-//		Organism *reproduce_one(int generation, Population *pop,Vector<Species*> &sorted_species, bool addAdv, Genome* adv);
+		Organism *reproduce_one(int generation, Population *pop,std::vector<Species> &sorted_species);
+//		Organism *reproduce_one(int generation, Population *pop,Vector<Species> &sorted_species, bool addAdv, Genome* adv);
         
 		Species(void);
 		Species(int i);
