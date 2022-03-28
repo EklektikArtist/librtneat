@@ -55,6 +55,7 @@ namespace NEAT {
 		Link(Trait *lt,double w,NNode *inode,NNode *onode,bool recur);
 
 		// For when you don't know the connections yet
+		Link(void);
 		Link(double w);
 
 		// Copy Constructor

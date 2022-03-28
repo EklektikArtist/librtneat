@@ -22,7 +22,7 @@
 using namespace NEAT;
 
 Gene::Gene(Trait *tp,double w,NNode *inode,NNode *onode,bool recur,double innov,double mnum) {
-	lnk=new Link(tp,w,inode,onode,recur);
+	lnk=*new Link(tp,w,inode,onode,recur);
 	innovation_num=innov;
 	mutation_num=mnum;
 
@@ -33,7 +33,7 @@ Gene::Gene(Trait *tp,double w,NNode *inode,NNode *onode,bool recur,double innov,
 
 Gene::Gene(Gene *g,Trait *tp,NNode *inode,NNode *onode) {
 	//cout<<"Trying to attach nodes: "<<inode<<" "<<onode<<endl;
-	lnk=new Link(tp,(g->lnk)->weight,inode,onode,(g->lnk)->is_recurrent);
+	lnk=*new Link(tp,(g->lnk).weight,inode,onode,(g->lnk).is_recurrent);
 	innovation_num=g->innovation_num;
 	mutation_num=g->mutation_num;
 	enable=g->enable;
@@ -41,7 +41,7 @@ Gene::Gene(Gene *g,Trait *tp,NNode *inode,NNode *onode) {
 	frozen=g->frozen;
 }
 
-Gene::Gene(const char *argline, std::vector<Trait*> &traits, std::vector<NNode*> &nodes) {
+Gene::Gene(const char *argline, std::vector<Trait> &traits, std::vector<NNode> &nodes) {
 	//Gene parameter holders
 	int traitnum;
 	int inodenum;
@@ -52,8 +52,8 @@ Gene::Gene(const char *argline, std::vector<Trait*> &traits, std::vector<NNode*>
 	int recur;
 	Trait *traitptr;
 
-	std::vector<Trait*>::iterator curtrait;
-	std::vector<NNode*>::iterator curnode;
+	std::vector<Trait>::iterator curtrait;
+	std::vector<NNode>::iterator curnode;
 
 	//Get the gene parameters
 
@@ -91,39 +91,40 @@ Gene::Gene(const char *argline, std::vector<Trait*> &traits, std::vector<NNode*>
 	if (traitnum==0) traitptr=0;
 	else {
 		curtrait=traits.begin();
-		while(((*curtrait)->trait_id)!=traitnum)
+		while((curtrait->trait_id)!=traitnum)
 			++curtrait;
-		traitptr=(*curtrait);
+		//MJRNODEPOINTER traitptr=curtrait;
 	}
 
 	//Get a pointer to the input node
 	curnode=nodes.begin();
-	while(((*curnode)->node_id)!=inodenum)
+	while((curnode->node_id)!=inodenum)
 		++curnode;
-	inode=(*curnode);
+	//MJRNODEPOINTER inode=(*curnode);
 
 	//Get a pointer to the output node
 	curnode=nodes.begin();
-	while(((*curnode)->node_id)!=onodenum)
+	while((curnode->node_id)!=onodenum)
 		++curnode;
-	onode=(*curnode);
+	//MJRNODEPOINTER onode=(*curnode);
 
-	lnk=new Link(traitptr,weight,inode,onode,recur);
+	lnk=*new Link(traitptr,weight,inode,onode,recur);
 }
 
 Gene::~Gene() {
-	delete lnk;
+	delete &lnk;
 }
 
 void Gene::print_to_file(std::ofstream &outFile) {
   outFile<<"gene ";
   //Start off with the trait number for this gene
-  if ((lnk->linktrait)==0) outFile<<"0 ";
-  else outFile<<((lnk->linktrait)->trait_id)<<" ";
-  outFile<<(lnk->in_node)->node_id<<" ";
-  outFile<<(lnk->out_node)->node_id<<" ";
-  outFile<<(lnk->weight)<<" ";
-  outFile<<(lnk->is_recurrent)<<" ";
+  //if ((lnk.linktrait)==0) outFile<<"0 ";
+  //else 
+  outFile<<((lnk.linktrait).trait_id)<<" ";
+  outFile<<(lnk.in_node).node_id<<" ";
+  outFile<<(lnk.out_node).node_id<<" ";
+  outFile<<(lnk.weight)<<" ";
+  outFile<<(lnk.is_recurrent)<<" ";
   outFile<<innovation_num<<" ";
   outFile<<mutation_num<<" ";
   outFile<<enable<<std::endl;

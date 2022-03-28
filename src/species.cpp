@@ -66,10 +66,10 @@ Species::Species(int i,bool n) {
 
 Species::~Species() {
 
-	std::vector<Organism*>::iterator curorg;
+	std::vector<Organism>::iterator curorg;
 
 	for(curorg=organisms.begin();curorg!=organisms.end();++curorg) {
-		delete (*curorg);
+		delete &curorg;
 	}
 
 }
@@ -81,7 +81,7 @@ bool Species::rank() {
 }
 
 double Species::estimate_average() {
-	std::vector<Organism*>::iterator curorg;
+	std::vector<Organism>::iterator curorg;
 	double total = 0.0; //running total of fitnesses
 
 	//Note: Since evolution is happening in real-time, some organisms may not
@@ -92,8 +92,8 @@ double Species::estimate_average() {
 
 	for(curorg = organisms.begin(); curorg != organisms.end(); ++curorg) {
 		//New variable time_alive
-		if (((*curorg)->time_alive) >= NEAT::time_alive_minimum) {    
-			total += (*curorg)->fitness;
+		if ((curorg->time_alive) >= NEAT::time_alive_minimum) {    
+			total += curorg->fitness;
 			++num_orgs;
 		}
 	}
@@ -108,13 +108,13 @@ double Species::estimate_average() {
 } 
 
 	
-	Organism *Species::reproduce_one(int generation, Population *pop,std::vector<Species*> &sorted_species) {
+	Organism *Species::reproduce_one(int generation, Population *pop,std::vector<Species> &sorted_species) {
 	//bool Species::reproduce(int generation, Population *pop,std::vector<Species*> &sorted_species) {
 	int count=generation; //This will assign genome id's according to the generation
-	std::vector<Organism*>::iterator curorg;
+	std::vector<Organism>::iterator curorg;
 
 
-	std::vector<Organism*> elig_orgs; //This list contains the eligible organisms (KEN)
+	std::vector<Organism> elig_orgs; //This list contains the eligible organisms (KEN)
 
 	int poolsize;  //The number of Organisms in the old generation
 
@@ -126,7 +126,7 @@ double Species::estimate_average() {
 
 	Genome *new_genome;  //For holding baby's genes
 
-	std::vector<Species*>::iterator curspecies;  //For adding baby
+	std::vector<Species>::iterator curspecies;  //For adding baby
 	Species *newspecies; //For babies in new Species
 	Organism *comporg;  //For Species determination through comparison
 
@@ -134,7 +134,7 @@ double Species::estimate_average() {
 	double randmult;
 	int randspeciesnum;
 	int spcount;  
-	std::vector<Species*>::iterator cursp;
+	std::vector<Species>::iterator cursp;
 
 	Network *net_analogue;  //For adding link to test for recurrency
 	int pause;
@@ -174,7 +174,7 @@ double Species::estimate_average() {
 	//ADDED CODE (Ken) 
 	//Now transfer the list to elig_orgs without including the ones that are too young (Ken)
 	for(curorg=organisms.begin();curorg!=organisms.end();++curorg) {
-		if ((*curorg)->time_alive >= NEAT::time_alive_minimum)
+		if (curorg->time_alive >= NEAT::time_alive_minimum)
 			elig_orgs.push_back(*curorg);
 	}
 
@@ -200,7 +200,7 @@ double Species::estimate_average() {
 	// because the size of a species is relatively small.
 	// But you can use it by using the roulette code here
 	for(curorg=elig_orgs.begin();curorg!=elig_orgs.end();++curorg) {
-	  total_fitness+=(*curorg)->fitness;
+	  total_fitness+=curorg->fitness;
 	}
 
 	//In reproducing only one offspring, the champ shouldn't matter  
@@ -231,19 +231,19 @@ double Species::estimate_average() {
 			////Roulette Wheel
 			//marble=randfloat()*total_fitness;
 			//curorg=elig_orgs.begin();
-			//spin=(*curorg)->fitness;
+			//spin=(curorg)->fitness;
 			//while(spin<marble) {
 			//	++curorg;
 
 				//Keep the wheel spinning
-			//	spin+=(*curorg)->fitness;
+			//	spin+=(curorg)->fitness;
 			//}
 			//Finished roulette
 			
 
-			mom=(*curorg);
+			//MJRNODEPOINTER mom=(&curorg);
 
-			new_genome=(mom->gnome)->duplicate(count);
+			new_genome=(mom->gnome).duplicate(count);
 
 			//Do the mutation depending on probabilities of 
 			//various mutations
@@ -309,17 +309,17 @@ double Species::estimate_average() {
 		////Roulette Wheel
 		//marble=randfloat()*total_fitness;
 		//curorg=elig_orgs.begin();
-		//spin=(*curorg)->fitness;
+		//spin=(curorg)->fitness;
 		//while(spin<marble) {
 		//	++curorg;
 
 			//Keep the wheel spinning
-	  //	spin+=(*curorg)->fitness;
+	  //	spin+=(curorg)->fitness;
 	  //}
 		//Finished roulette
 		
 
-		mom=(*curorg);         
+		//MJRNODEPOINTERmom=(*curorg);         
 
 		//Choose random dad
 
@@ -335,18 +335,18 @@ double Species::estimate_average() {
 			////Use a roulette wheel
 			//marble=randfloat()*total_fitness;
 			//curorg=elig_orgs.begin();
-			//spin=(*curorg)->fitness;
+			//spin=(curorg)->fitness;
 			//while(spin<marble) {
 			//	++curorg;
 
 			
 				//Keep the wheel spinning
-		  //	spin+=(*curorg)->fitness;
+		  //	spin+=(curorg)->fitness;
 		  //}
 			////Finished roulette
 				
 
-			dad=(*curorg);
+			//MJRNODEPOINTERdad=(*curorg);
 		}
 		else {
 
@@ -368,7 +368,7 @@ double Species::estimate_average() {
 				cursp=(sorted_species.begin());
 				for(spcount=0;spcount<randspeciesnum;spcount++)
 					++cursp;
-				randspecies=(*cursp);
+				//MJRNODEPOINTERrandspecies=(cursp);
 
 				++giveup;
 			}
@@ -385,20 +385,20 @@ double Species::estimate_average() {
 			//dad=(*curorg);            
 
 			//New way: Make dad be a champ from the random species
-			dad=(*((randspecies->organisms).begin()));
+			//MJRNODEPOINTERdad=(*((randspecies->organisms).begin()));
 
 			outside=true;
 		}
 
 		//Perform mating based on probabilities of differrent mating types
 		if (randfloat()<NEAT::mate_multipoint_prob) { 
-			new_genome=(mom->gnome)->mate_multipoint(dad->gnome,count,mom->orig_fitness,dad->orig_fitness,outside);
+			new_genome=(mom->gnome).mate_multipoint(&dad->gnome,count,mom->orig_fitness,dad->orig_fitness,outside);
 		}
 		else if (randfloat()<(NEAT::mate_multipoint_avg_prob/(NEAT::mate_multipoint_avg_prob+NEAT::mate_singlepoint_prob))) {
-			new_genome=(mom->gnome)->mate_multipoint_avg(dad->gnome,count,mom->orig_fitness,dad->orig_fitness,outside);
+			new_genome=(mom->gnome).mate_multipoint_avg(&dad->gnome,count,mom->orig_fitness,dad->orig_fitness,outside);
 		}
 		else {
-			new_genome=(mom->gnome)->mate_singlepoint(dad->gnome,count);
+			new_genome=(mom->gnome).mate_singlepoint(&dad->gnome,count);
 		}
 
 		mate_baby=true;
@@ -406,8 +406,8 @@ double Species::estimate_average() {
 		//Determine whether to mutate the baby's Genome
 		//This is done randomly or if the mom and dad are the same organism
 		if ((randfloat()>NEAT::mate_only_prob)||
-			((dad->gnome)->genome_id==(mom->gnome)->genome_id)||
-			(((dad->gnome)->compatibility(mom->gnome))==0.0))
+			((dad->gnome).genome_id==(mom->gnome).genome_id)||
+			(((dad->gnome).compatibility(&mom->gnome))==0.0))
 		{
 
 			//Do the mutation depending on probabilities of 
@@ -474,12 +474,12 @@ double Species::estimate_average() {
 	if (curspecies==(pop->species).end()){
 		//Create the first species
 		newspecies=new Species(++(pop->last_species),true);
-		(pop->species).push_back(newspecies);
+		(pop->species).push_back(*newspecies);
 		newspecies->add_Organism(baby);  //Add the baby
-		baby->species=newspecies;  //Point the baby to its species
+		baby->species=*newspecies;  //Point the baby to its species
 	} 
 	else {
-		comporg=(*curspecies)->first();
+		comporg=curspecies->first();
 		found=false;
 
 
@@ -495,11 +495,11 @@ double Species::estimate_average() {
 				//Keep searching for a matching species
 				++curspecies;
 				if (curspecies!=(pop->species).end())
-					comporg=(*curspecies)->first();
+					comporg=curspecies->first();
 			}
-			else if (((baby->gnome)->compatibility(comporg->gnome))<NEAT::compat_threshold) {
+			else if (((baby->gnome).compatibility(&comporg->gnome))<NEAT::compat_threshold) {
 				//Found compatible species, so add this organism to it
-				(*curspecies)->add_Organism(baby);
+				curspecies->add_Organism(baby);
 				baby->species=(*curspecies);  //Point organism to its species
 				found=true;  //Note the search is over
 			}
@@ -507,41 +507,41 @@ double Species::estimate_average() {
 				//Keep searching for a matching species
 				++curspecies;
 				if (curspecies!=(pop->species).end()) 
-					comporg=(*curspecies)->first();
+					comporg=curspecies->first();
 			}
 		}
 
 		//If we didn't find a match, create a new species
 		if (found==false) {
 			newspecies=new Species(++(pop->last_species),true);
-			(pop->species).push_back(newspecies);
+			(pop->species).push_back(*newspecies);
 			newspecies->add_Organism(baby);  //Add the baby
-			baby->species=newspecies;  //Point baby to its species
+			baby->species=*newspecies;  //Point baby to its species
 		}
 
 	} //end else     
 
 	//Put the baby also in the master organism list
-	(pop->organisms).push_back(baby);
+	(pop->organisms).push_back(*baby);
 
 	return baby; //Return a pointer to the baby
 }
 
 bool Species::add_Organism(Organism *o){
-	organisms.push_back(o);
+	organisms.push_back(*o);
 	return true;
 }
 
 Organism *Species::get_champ() {
 	double champ_fitness=-1.0;
 	Organism *thechamp;
-	std::vector<Organism*>::iterator curorg;
+	std::vector<Organism>::iterator curorg;
 
 	for(curorg=organisms.begin();curorg!=organisms.end();++curorg) {
 		//TODO: Remove DEBUG code
-		//cout<<"searching for champ...looking at org "<<(*curorg)->gnome->genome_id<<" fitness: "<<(*curorg)->fitness<<endl;
-		if (((*curorg)->fitness)>champ_fitness) {
-			thechamp=(*curorg);
+		//cout<<"searching for champ...looking at org "<<(curorg)->gnome->genome_id<<" fitness: "<<(curorg)->fitness<<endl;
+		if ((curorg->fitness)>champ_fitness) {
+			//MJRNODEPOINTER thechamp=(*curorg);
 			champ_fitness=thechamp->fitness;
 		}
 	}
@@ -553,12 +553,12 @@ Organism *Species::get_champ() {
 }
 
 bool Species::remove_org(Organism *org) {
-	std::vector<Organism*>::iterator curorg;
+	std::vector<Organism>::iterator curorg;
 
 	curorg=organisms.begin();
-	while((curorg!=organisms.end())&&
-		((*curorg)!=org))
-		++curorg;
+//MJRNODEPOINTER	while((curorg!=organisms.end())&&
+		//MJRNODEPOINTER((*curorg)!=org))
+		//MJRNODEPOINTER++curorg;
 
 	if (curorg==organisms.end()) {
 		//cout<<"ALERT: Attempt to remove nonexistent Organism from Species"<<endl;
@@ -572,12 +572,12 @@ bool Species::remove_org(Organism *org) {
 }
 
 Organism *Species::first() {
-	return *(organisms.begin());
+	//MJRNODEPOINTER return *(organisms.begin());
 }
 
 //Print Species to a file outFile
 bool Species::print_to_file(std::ofstream &outFile) {
-  std::vector<Organism*>::iterator curorg;
+  std::vector<Organism>::iterator curorg;
 
   //Print a comment on the Species info
   outFile<<std::endl<<"/* Species #"<<id<<" : (Size "<<organisms.size()<<") (AF "<<ave_fitness<<") (Age "<<age<<")  */"<<std::endl<<std::endl;
@@ -589,14 +589,14 @@ bool Species::print_to_file(std::ofstream &outFile) {
   for(curorg=organisms.begin();curorg!=organisms.end();++curorg) {
 
     //Put the fitness for each organism in a comment
-    outFile<<std::endl<<"/* Organism #"<<((*curorg)->gnome)->genome_id<<" Fitness: "<<(*curorg)->fitness<<" Error: "<<(*curorg)->error<<" */"<<std::endl;
+    outFile<<std::endl<<"/* Organism #"<<(curorg->gnome).genome_id<<" Fitness: "<<(curorg)->fitness<<" Error: "<<(curorg)->error<<" */"<<std::endl;
 
     //If it is a winner, mark it in a comment
-    if ((*curorg)->winner) outFile<<"/* ##------$ WINNER "<<((*curorg)->gnome)->genome_id<<" SPECIES #"<<id<<" $------## */"<<std::endl;
+    if ((curorg)->winner) outFile<<"/* ##------$ WINNER "<<((curorg)->gnome).genome_id<<" SPECIES #"<<id<<" $------## */"<<std::endl;
 
-    ((*curorg)->gnome)->print_to_file(outFile);
+    ((curorg)->gnome).print_to_file(outFile);
     //We can confirm by writing the genome #'s to the screen
-    //std::cout<<((*curorg)->gnome)->genome_id<<std::endl;
+    //std::cout<<((curorg)->gnome).genome_id<<std::endl;
   }
 
   return true;

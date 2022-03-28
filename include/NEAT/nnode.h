@@ -113,7 +113,7 @@ namespace NEAT {
 		int node_id;  // A node can be given an identification number for saving in files
 
 		nodeplace gen_node_label;  // Used for genetic marking of nodes
-
+        NNode(void);
 		NNode(nodetype ntype,int nodeid);
 
 		NNode(nodetype ntype,int nodeid, nodeplace placement);

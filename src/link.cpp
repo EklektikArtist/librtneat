@@ -22,19 +22,19 @@ using namespace NEAT;
 
 Link::Link(double w,NNode *inode,NNode *onode,bool recur) {
 	weight=w;
-	in_node=inode;
-	out_node=onode;
+	in_node=*inode;
+	out_node=*onode;
 	is_recurrent=recur;
 	added_weight=0;
-	linktrait=0;
+	//linktrait=0;
 	time_delay=false;
 	trait_id=1;
 }
 
 Link::Link(Trait *lt,double w,NNode *inode,NNode *onode,bool recur) {
 	weight=w;
-	in_node=inode;
-	out_node=onode;
+	in_node=*inode;
+	out_node=*onode;
 	is_recurrent=recur;
 	added_weight=0;
 	linktrait=lt;

@@ -21,6 +21,26 @@
 
 using namespace NEAT;
 
+NNode::NNode(void) {
+	active_flag=false;
+	activesum=0;
+	activation=0;
+	output=0;
+	last_activation=0;
+	last_activation2=0;
+	type=NEURON; //NEURON or SENSOR type
+	activation_count=0; //Inactive upon creation
+	node_id=0;
+	ftype=SIGMOID;
+	//nodetrait=0;
+	gen_node_label=HIDDEN;
+	//dup=0;
+	//analogue=0;
+	frozen=false;
+	trait_id=1;
+	override=false;
+}
+
 NNode::NNode(nodetype ntype,int nodeid) {
 	active_flag=false;
 	activesum=0;
@@ -32,10 +52,10 @@ NNode::NNode(nodetype ntype,int nodeid) {
 	activation_count=0; //Inactive upon creation
 	node_id=nodeid;
 	ftype=SIGMOID;
-	nodetrait=0;
+	//nodetrait=0;
 	gen_node_label=HIDDEN;
-	dup=0;
-	analogue=0;
+	//dup=0;
+	//analogue=0;
 	frozen=false;
 	trait_id=1;
 	override=false;
@@ -52,10 +72,10 @@ NNode::NNode(nodetype ntype,int nodeid, nodeplace placement) {
 	activation_count=0; //Inactive upon creation
 	node_id=nodeid;
 	ftype=SIGMOID;
-	nodetrait=0;
+	//nodetrait=0;
 	gen_node_label=placement;
-	dup=0;
-	analogue=0;
+	//dup=0;
+	//analogue=0;
 	frozen=false;
 	trait_id=1;
 	override=false;
@@ -71,10 +91,10 @@ NNode::NNode(NNode *n,Trait *t) {
 	activation_count=0; //Inactive upon creation
 	node_id=n->node_id;
 	ftype=SIGMOID;
-	nodetrait=0;
+	//nodetrait=0;
 	gen_node_label=n->gen_node_label;
-	dup=0;
-	analogue=0;
+	//dup=0;
+	//analogue=0;
 	nodetrait=t;
 	frozen=false;
 	if (t!=0)
@@ -83,9 +103,9 @@ NNode::NNode(NNode *n,Trait *t) {
 	override=false;
 }
 
-NNode::NNode (const char *argline, std::vector<Trait*> &traits) {
+NNode::NNode (const char *argline, std::vector<Trait> &traits) {
 	int traitnum;
-	std::vector<Trait*>::iterator curtrait;
+	std::vector<Trait>::iterator curtrait;
 
 	activesum=0;
 
@@ -114,24 +134,24 @@ NNode::NNode (const char *argline, std::vector<Trait*> &traits) {
 	frozen=false;  //TODO: Maybe change
 
 	//Get a pointer to the trait this node points to
-	if (traitnum==0) nodetrait=0;
-	else {
+	//if (traitnum==0) nodetrait=0;
+	//else {
 		curtrait=traits.begin();
-		while(((*curtrait)->trait_id)!=traitnum)
+		while((curtrait->trait_id)!=traitnum)
 			++curtrait;
 		nodetrait=(*curtrait);
-		trait_id=nodetrait->trait_id;
-	}
+		trait_id=nodetrait.trait_id;
+	//}
 
 	override=false;
 }
 
 NNode::~NNode() {
-	std::vector<Link*>::iterator curlink;
+	std::vector<Link>::iterator curlink;
 
 	//Kill off all incoming links
 	for(curlink=incoming.begin();curlink!=incoming.end();++curlink) {
-		delete (*curlink);
+		delete &curlink;
 	}
 	//if (nodetrait!=0) delete nodetrait;
 }
@@ -173,7 +193,7 @@ double NNode::get_active_out_td() {
 
 // This recursively flushes everything leading into and including this NNode, including recurrencies
 void NNode::flushback() {
-	std::vector<Link*>::iterator curlink;
+	std::vector<Link>::iterator curlink;
 
 	//A sensor should not flush black
 	if (type!=SENSOR) {
@@ -188,9 +208,9 @@ void NNode::flushback() {
 		//Flush back recursively
 		for(curlink=incoming.begin();curlink!=incoming.end();++curlink) {
 			//Flush the link itself (For future learning parameters possibility) 
-			(*curlink)->added_weight=0;
-			if ((((*curlink)->in_node)->activation_count>0))
-				((*curlink)->in_node)->flushback();
+			curlink->added_weight=0;
+			if (((curlink->in_node).activation_count>0))
+				(curlink->in_node).flushback();
 		}
 	}
 	else {
@@ -224,7 +244,7 @@ void NNode::derive_trait(Trait *curtrait) {
 
 // Returns the gene that created the node
 NNode *NNode::get_analogue() {
-	return analogue;
+	//MJRNODEPOINTERreturn analogue;
 }
 
 // Force an output value on the node
@@ -247,8 +267,9 @@ void NNode::activate_override() {
 
 void NNode::print_to_file(std::ofstream &outFile) {
   outFile<<"node "<<node_id<<" ";
-  if (nodetrait!=0) outFile<<nodetrait->trait_id<<" ";
-  else outFile<<"0 ";
+  //if (nodetrait!=0) 
+      outFile<<nodetrait.trait_id<<" ";
+ // else outFile<<"0 ";
   outFile<<type<<" ";
   outFile<<gen_node_label<<std::endl;
 }
