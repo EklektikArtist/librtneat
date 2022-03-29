@@ -25,15 +25,16 @@
 #include "genome.h"
 #include "species.h"
 #include "organism.h"
+#include "..\code\cls_hub.h"
 
 namespace NEAT {
 
 	class Species;
-	class Organism;
+	class Hub;
 
 	// ---------------------------------------------  
 	// POPULATION CLASS:
-	//   A Population is a group of Organisms   
+	//   A Population is a group of Hubs   
 	//   including their species                        
 	// ---------------------------------------------  
 	class Population {
@@ -47,7 +48,7 @@ namespace NEAT {
 
 	public:
 
-        std::vector<Organism> organisms; //The organisms in the Population
+        std::vector<Hub> hubs; //The hubs in the Population
 
         std::vector<Species> species;  // Species in the Population. Note that the species should comprise all the genomes 
 
@@ -69,7 +70,7 @@ namespace NEAT {
 		double highest_fitness;  //Stagnation detector
 		int highest_last_changed; //If too high, leads to delta coding
 
-		// Separate the Organisms into species
+		// Separate the Hubs into species
 		bool speciate();
 
 		// Print Population to a file specified by a string 
@@ -93,14 +94,14 @@ namespace NEAT {
 
 		// *** Real-time methods *** 
 
-		// Places the organisms in species in order from best to worst fitness 
+		// Places the hubs in species in order from best to worst fitness 
 		bool rank_within_species();
 
 		// Estimates average fitness for all existing species
 		void estimate_all_averages();
 
 		//Reproduce only out of the pop champ
-		Organism* reproduce_champ(int generation);
+		Hub* reproduce_champ(int generation);
 
 		// Probabilistically choose a species to reproduce
 		// Note that this method is effectively real-time fitness sharing in that the 
@@ -108,42 +109,43 @@ namespace NEAT {
 		// to their average fitness, which approximates the generational
 		// method of producing the next generation of the species en masse
 		// based on its average (shared) fitness.  
-		Species *choose_parent_species();
+		Species choose_parent_species();
 
 		//Remove a species from the species list (sometimes called by remove_worst when a species becomes empty)
-		bool remove_species(Species *spec);
+		bool remove_species(Species spec);
 
 		// Removes worst member of population that has been around for a minimum amount of time and returns
-		// a pointer to the Organism that was removed (note that the pointer will not point to anything at all,
-		// since the Organism it was pointing to has been deleted from memory)
-		Organism* remove_worst();
+		// a pointer to the Hub that was removed (note that the pointer will not point to anything at all,
+		// since the Hub it was pointing to has been deleted from memory)
+		Hub remove_worst();
 
 		//Warning: rtNEAT does not behave like regular NEAT if you remove the worst probabilistically   
 		//You really should just use "remove_worst," which removes the org with worst adjusted fitness. 
-		Organism* remove_worst_probabilistic();
+		Hub remove_worst_probabilistic();
 
 		//KEN: New 2/17/04
-		//This method takes an Organism and reassigns what Species it belongs to
-		//It is meant to be used so that we can reasses where Organisms should belong
+		//This method takes an Hub and reassigns what Species it belongs to
+		//It is meant to be used so that we can reasses where Hubs should belong
 		//as the speciation threshold changes.
-        void reassign_species(Organism *org);
+        void reassign_species(Hub *org);
         
-        void remove_org(Organism *org);
+        void remove_org(Hub org);
 
-		//Move an Organism from one Species to another (called by reassign_species)
-		void switch_species(Organism *org, Species *orig_species, Species *new_species);
+		//Move an Hub from one Species to another (called by reassign_species)
+		void switch_species(Hub org, Species orig_species, Species new_species);
 
 		// Construct off of a single spawning Genome 
-		Population(Genome *g,int size);
+		Population(void);
+		Population(Genome *Ng,int size);
 
 		// Construct off of a single spawning Genome without mutation
-		Population(Genome *g,int size, float power);
+		Population(Genome g,int size, float power);
 		
 		//MSC Addition
 		// Construct off of a vector of genomes with a mutation rate of "power"
 		Population(std::vector<Genome> genomeList, float power);
 
-		bool clone(Genome *g,int size, float power);
+		bool clone(Genome g,int size, float power);
 
 		//// Special constructor to create a population of random topologies     
 		//// uses Genome(int i, int o, int n,int nmax, bool r, double linkprob) 
@@ -155,7 +157,7 @@ namespace NEAT {
 
 		// It can delete a Population in two ways:
 		//    -delete by killing off the species
-		//    -delete by killing off the organisms themselves (if not speciated)
+		//    -delete by killing off the hubs themselves (if not speciated)
 		// It does the latter if it sees the species list is empty
 		~Population();
 
