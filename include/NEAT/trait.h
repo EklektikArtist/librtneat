@@ -20,6 +20,7 @@
 #define _NEAT_TRAIT_H_
 
 #include <fstream>
+#include <vector>
 #include "neat.h"
 
 namespace NEAT {
@@ -59,6 +60,7 @@ namespace NEAT {
 
 		// Dump trait to a stream
 	    void print_to_file(std::ofstream &outFile);
+		void to_array( std::vector<uint8_t>* res_vec);
 
 		// Perturb the trait parameters slightly
 		void mutate();

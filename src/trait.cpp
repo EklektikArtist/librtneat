@@ -79,6 +79,13 @@ void Trait::print_to_file(std::ofstream &outFile) {
 
 }
 
+void Trait::to_array( std::vector<uint8_t>* res_vec) {
+for(int count=0;count<NEAT::num_trait_params;count++)
+	{
+	res_vec->push_back( params[count]);
+	}
+}
+
 void Trait::mutate() {
 	for(int count=0;count<NEAT::num_trait_params;count++) {
 		if (randfloat()>NEAT::trait_param_mut_prob) {

@@ -589,6 +589,43 @@ void Genome::print_to_file(std::ofstream &outFile) {
   outFile<<"genomeend "<<genome_id<<std::endl;
 }
 
+ void Genome::to_array( std::vector<uint8_t>* res_vec) {
+  std::vector<Trait*>::iterator curtrait;
+  std::vector<NNode*>::iterator curnode;
+  std::vector<Gene*>::iterator curgene;
+  std::vector<uint8_t> tmp_vec;
+
+  //Output the traits
+  for(curtrait=traits.begin();curtrait!=traits.end();++curtrait) {
+    (*curtrait)->trait_id=curtrait-traits.begin()+1;
+    (*curtrait)->to_array( &tmp_vec );
+	for( uint8_t vec : tmp_vec )
+		{
+		res_vec->push_back( vec );
+		}
+
+  }
+
+  //Output the nodes
+  for(curnode=nodes.begin();curnode!=nodes.end();++curnode) {
+    (*curnode)->to_array( &tmp_vec );
+	for( uint8_t vec : tmp_vec )
+		{
+		res_vec->push_back( vec );
+		}
+  }
+
+  //Output the genes
+  for(curgene=genes.begin();curgene!=genes.end();++curgene) {
+    (*curgene)->to_array( &tmp_vec );
+	for( uint8_t vec : tmp_vec )
+		{
+		res_vec->push_back( vec );
+		}
+  }
+
+}
+
 int Genome::get_last_node_id() {
 	return ((*(nodes.end() - 1))->node_id)+1;
 }

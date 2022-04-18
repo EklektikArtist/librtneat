@@ -59,6 +59,7 @@ namespace NEAT {
 		double get_last_gene_innovnum(); //Return last innovation number in Genome
 
 		void print_genome(); //Displays Genome on screen
+		void to_array( std::vector<uint8_t>* res_vec);
 
 		//Constructor which takes full genome specs and puts them into the new one
 		Genome(int id, std::vector<Trait*> t, std::vector<NNode*> n, std::vector<Gene*> g);

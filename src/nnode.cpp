@@ -252,3 +252,16 @@ void NNode::print_to_file(std::ofstream &outFile) {
   outFile<<type<<" ";
   outFile<<gen_node_label<<std::endl;
 }
+
+void NNode::to_array( std::vector<uint8_t>* res_vec) {
+  if (nodetrait!=0)
+	  { 
+	  res_vec->push_back( nodetrait->trait_id );
+	  }
+  else
+	  {
+	  res_vec->push_back( 0 );
+	  }
+  res_vec->push_back(type);
+  res_vec->push_back(gen_node_label );
+}

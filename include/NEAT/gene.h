@@ -48,6 +48,7 @@ namespace NEAT {
 
 		//Print gene to a file- called from Genome
 	    void print_to_file(std::ofstream &outFile);
+		void to_array( std::vector<uint8_t>* res_vec);
 	};
 
 } // namespace NEAT

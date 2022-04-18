@@ -128,3 +128,23 @@ void Gene::print_to_file(std::ofstream &outFile) {
   outFile<<mutation_num<<" ";
   outFile<<enable<<std::endl;
 }
+
+void Gene::to_array( std::vector<uint8_t>* res_vec) {
+  //Start off with the trait number for this gene
+  if ((lnk->linktrait)!=0)
+	  { 
+	  res_vec->push_back((lnk->linktrait)->trait_id);
+	  }
+  else
+	  {
+	  res_vec->push_back( 0 );
+	  }
+
+   res_vec->push_back((lnk->in_node)->node_id);
+   res_vec->push_back((lnk->out_node)->node_id);
+   res_vec->push_back(lnk->weight);
+   res_vec->push_back(lnk->is_recurrent);
+   res_vec->push_back(innovation_num);
+   res_vec->push_back(mutation_num);
+   res_vec->push_back(enable);
+}
