@@ -67,6 +67,8 @@ namespace NEAT {
 		//Constructor which takes in links (not genes) and creates a Genome
 		Genome(int id, std::vector<Trait*> t, std::vector<NNode*> n, std::vector<Link*> links);
 
+		Genome(std::vector<uint8_t> *inpt_vec, uint8_t *offset);
+
 		// Copy constructor
 		Genome(const Genome& genome);
 

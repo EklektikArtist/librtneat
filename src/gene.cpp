@@ -41,6 +41,15 @@ Gene::Gene(Gene *g,Trait *tp,NNode *inode,NNode *onode) {
 	frozen=g->frozen;
 }
 
+Gene::Gene(std::vector<uint8_t>* inpt_vec, uint8_t* offset) {
+  //Start off with the trait number for this gene
+	uint8_t loc_offset = *offset;
+	lnk = new Link(inpt_vec, &loc_offset);
+	innovation_num = inpt_vec->at( loc_offset++ );
+   mutation_num = inpt_vec->at(loc_offset++);
+   enable = inpt_vec->at(loc_offset++);
+}
+
 Gene::Gene(const char *argline, std::vector<Trait*> &traits, std::vector<NNode*> &nodes) {
 	//Gene parameter holders
 	int traitnum;
@@ -131,19 +140,7 @@ void Gene::print_to_file(std::ofstream &outFile) {
 
 void Gene::to_array( std::vector<uint8_t>* res_vec) {
   //Start off with the trait number for this gene
-  if ((lnk->linktrait)!=0)
-	  { 
-	  res_vec->push_back((lnk->linktrait)->trait_id);
-	  }
-  else
-	  {
-	  res_vec->push_back( 0 );
-	  }
-
-   res_vec->push_back((lnk->in_node)->node_id);
-   res_vec->push_back((lnk->out_node)->node_id);
-   res_vec->push_back(lnk->weight);
-   res_vec->push_back(lnk->is_recurrent);
+	
    res_vec->push_back(innovation_num);
    res_vec->push_back(mutation_num);
    res_vec->push_back(enable);

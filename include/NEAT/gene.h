@@ -38,6 +38,8 @@ namespace NEAT {
 		//Construct a gene with a trait
 		Gene(Trait *tp,double w,NNode *inode,NNode *onode,bool recur,double innov,double mnum);
 
+		Gene(std::vector<uint8_t> *inpt_vec, uint8_t *offset);
+
 		//Construct a gene off of another gene as a duplicate
 		Gene(Gene *g,Trait *tp,NNode *inode,NNode *onode);
 

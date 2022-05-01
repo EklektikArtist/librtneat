@@ -117,6 +117,7 @@ namespace NEAT {
 		NNode(nodetype ntype,int nodeid);
 
 		NNode(nodetype ntype,int nodeid, nodeplace placement);
+		NNode(std::vector<uint8_t> *inpt_vec, uint8_t *offset);
 
 		// Construct a NNode off another NNode for genome purposes
 		NNode(NNode *n,Trait *t);

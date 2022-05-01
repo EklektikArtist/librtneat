@@ -52,6 +52,8 @@ namespace NEAT {
 		// Create a trait exactly like another trait
 		Trait(Trait *t);
 
+		Trait(std::vector<uint8_t> *inpt_vec, uint8_t *offset);
+
 		// Special constructor off a file assume word "trait" has been read in
 		Trait(const char *argline);
 

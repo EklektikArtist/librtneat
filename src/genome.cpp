@@ -31,6 +31,31 @@ Genome::Genome(int id, std::vector<Trait*> t, std::vector<NNode*> n, std::vector
 	genes=g;
 }
 
+Genome::Genome(std::vector<uint8_t> *inpt_vec, uint8_t *offset) {
+	//Output the traits
+	uint8_t loc_offset = *offset;
+	uint8_t traits_cnt = inpt_vec->at( loc_offset );
+	for (uint8_t curtrait = 0; curtrait != traits_cnt; curtrait++) 
+		{
+		traits.push_back( new Trait( inpt_vec, loc_offset) );
+		}
+
+	//Output the nodes
+	uint8_t node_cnt = inpt_vec->at(loc_offset);
+	for (uint8_t curnode = 0; curnode != node_cnt; curnode++)
+		{
+		nodes.push_back(new NNode(inpt_vec, loc_offset));
+		}
+
+	//Output the genes
+	uint8_t gene_cnt = inpt_vec->at(loc_offset);
+	for (uint8_t curgene = 0; curgene != gene_cnt; curgene++)
+		{
+		genes.push_back(new Gene(inpt_vec, loc_offset));
+		}
+
+}
+
 Genome::Genome(int id, std::ifstream &iFile) {
 
 	char curword[128];  //max word size of 128 characters
@@ -596,6 +621,7 @@ void Genome::print_to_file(std::ofstream &outFile) {
   std::vector<uint8_t> tmp_vec;
 
   //Output the traits
+  res_vec->push_back( traits.size() );
   for(curtrait=traits.begin();curtrait!=traits.end();++curtrait) {
     (*curtrait)->trait_id=curtrait-traits.begin()+1;
     (*curtrait)->to_array( &tmp_vec );
@@ -607,6 +633,7 @@ void Genome::print_to_file(std::ofstream &outFile) {
   }
 
   //Output the nodes
+  res_vec->push_back(nodes.size());
   for(curnode=nodes.begin();curnode!=nodes.end();++curnode) {
     (*curnode)->to_array( &tmp_vec );
 	for( uint8_t vec : tmp_vec )
@@ -616,6 +643,7 @@ void Genome::print_to_file(std::ofstream &outFile) {
   }
 
   //Output the genes
+  res_vec->push_back(genes.size());
   for(curgene=genes.begin();curgene!=genes.end();++curgene) {
     (*curgene)->to_array( &tmp_vec );
 	for( uint8_t vec : tmp_vec )

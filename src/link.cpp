@@ -42,7 +42,23 @@ Link::Link(Trait *lt,double w,NNode *inode,NNode *onode,bool recur) {
 	if (lt!=0)
 		trait_id=lt->trait_id;
 	else trait_id=1;
-}	
+}
+
+void Link::to_array(std::vector<uint8_t>* res_vec) {
+if (linktrait != 0)
+{
+	res_vec->push_back(linktrait)->trait_id);
+}
+else
+{
+	res_vec->push_back(0);
+}
+
+ (in_node)->node_id);
+out_node)->node_id);
+ weight);
+is_recurrent);
+}
 
 void Link::derive_trait(Trait *curtrait) {
 

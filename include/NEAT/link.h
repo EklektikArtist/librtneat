@@ -53,6 +53,7 @@ namespace NEAT {
 
 		// Including a trait pointer in the Link creation
 		Link(Trait *lt,double w,NNode *inode,NNode *onode,bool recur);
+		void Link::to_array(std::vector<uint8_t>* res_vec);
 
 		// For when you don't know the connections yet
 		Link(double w);
